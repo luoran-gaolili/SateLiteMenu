@@ -267,11 +267,9 @@ public class RgkProvider extends ContentProvider {
 					String tag = parser.getName();
 					if (tag.equals(TAG_FAORITE)) {
 						Log.d("LUORAN89", "addFavorite");
-						boolean add = addFavorite(db, values, array,
-								packageManager, intent);
+						addFavorite(db, values, array, packageManager, intent);
 					} else if (tag.equals(TAG_QUICKSWITCH)) {
-						boolean add = addQuickSwith(db, values, array,
-								packageManager);
+						addQuickSwith(db, values, array, packageManager);
 						Log.d("LUORAN89", "addQuickSwith");
 					}
 					array.recycle();
