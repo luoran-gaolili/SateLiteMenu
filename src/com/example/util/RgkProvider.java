@@ -228,9 +228,6 @@ public class RgkProvider extends ContentProvider {
 					+ "icon_package VARCHAR,"
 					+ "icon_resource VARCHAR,"
 					+ "icon_bitmap BLOB)");
-
-			db.execSQL("CREATE TABLE whitelist(_id INTEGER PRIMARY KEY AUTOINCREMENT,"
-					+ "item_intent VARCHAR)");
 		}
 
 		@Override
@@ -250,7 +247,6 @@ public class RgkProvider extends ContentProvider {
 				XmlResourceParser parser = mContext.getResources().getXml(
 						workspaceResId);
 				AttributeSet attributeSet = Xml.asAttributeSet(parser);
-				beginDocument(parser, TAG_FAORITES);
 				int depth = parser.getDepth();
 				int type = 0;
 				/**
@@ -287,25 +283,6 @@ public class RgkProvider extends ContentProvider {
 			} finally {
 				db.close();
 			}
-		}
-
-		private void beginDocument(XmlPullParser parser, String firstElement)
-				throws XmlPullParserException, IOException {
-			int type = 0;
-			while ((type = parser.next()) != XmlPullParser.START_TAG
-					&& (type != XmlPullParser.END_DOCUMENT)) {
-
-			}
-
-			if (type != XmlPullParser.START_TAG) {
-				throw new XmlPullParserException("not start tag found");
-			}
-
-			if (!parser.getName().equals(firstElement)) {
-				throw new XmlPullParserException("Unexpected start tag: found "
-						+ parser.getName() + ", expected " + firstElement);
-			}
-
 		}
 
 		/**
@@ -429,8 +406,7 @@ public class RgkProvider extends ContentProvider {
 			ArrayList<Integer> index = new ArrayList<>();
 			if (cursor.getCount() < 9) {
 				if (cursor.getCount() > 0) {
-					for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor
-							.moveToNext()) {
+					while (cursor.moveToNext()) {
 						index.add(cursor.getInt(cursor
 								.getColumnIndexOrThrow(RgkItemSettings.BaseColumns.ITEM_INDEX)));
 					}
@@ -454,10 +430,12 @@ public class RgkProvider extends ContentProvider {
 			database.insert(table, null, values);
 		}
 
+		// 将bitmap对象转换为字符数组存入数据库
 		byte[] flattenBitmap(Bitmap bitmap) {
 			int size = bitmap.getWidth() * bitmap.getHeight() * 4;
 			ByteArrayOutputStream out = new ByteArrayOutputStream(size);
 			try {
+				// 100 表示不压缩图片
 				bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 				out.flush();
 				out.close();
