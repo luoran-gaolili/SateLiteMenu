@@ -1,0 +1,72 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="app_name">Sate Lite</string>
+    <string name="recent">Recent</string>
+    <string name="frequent">Frequent</string>
+    <string name="toolbox">Toolbox</string>
+    <string name="ok_title">Ok</string>
+    <string name="cancel_title">Cancel</string>
+
+    <!-- QuickSwitch_ACTION -->
+    <string name="rgk_flash">com.well.swipe.action.flash</string>
+    <string name="rgk_wifi">com.well.swipe.action.wifi</string>
+    <string name="rgk_screenbrightness">com.well.swipe.action.screenbrightness</string>
+    <string name="rgk_camera">com.well.swipe.action.camera</string>
+    <string name="rgk_calculator">com.well.swipe.action.calculator</string>
+    <string name="rgk_flightmode">com.well.swipe.action.flightmode</string>
+    <string name="rgk_rgksetting">com.well.swipe.action.rgksetting</string>
+    <string name="rgk_bluetooth">com.well.swipe.action.bluetooth</string>
+    <string name="rgk_mute">com.well.swipe.action.mute</string>
+    <string name="rgk_autorotation">com.well.swipe.action.autorotation</string>
+    <string name="rgk_setting">com.well.swipe.action.setting</string>
+    <string name="rgk_alarm">com.well.swipe.action.alarm</string>
+    <!-- QuickSwitch_ACTION_TITLE -->
+    <string name="rgk_flash_title">Flashlight</string>
+    <string name="rgk_wifi_title">Wi-Fi</string>
+    <string name="rgk_screenbrightness_title">Brightness</string>
+    <string name="rgk_data_title">Data</string>
+    <string name="rgk_calculator_title">Calculator</string>
+    <string name="rgk_flightmode_title">Airplane mode</string>
+    <string name="rgk_rgksetting_title">rgk Setting</string>
+    <string name="rgk_bluetooth_title">Bluetooth</string>
+    <string name="rgk_mute_title">Sound</string>
+    <string name="rgk_autorotation_title">Rotation</string>
+    <string name="rgk_setting_title">Settings</string>
+    <string name="rgk_edit_header_title">selected(%1$s/%2$s)</string>
+    <string name="favorite_up_to_9">up to 9</string>
+    <string name="scene_mode_0">Vibrator</string>
+    <string name="scene_mode_1">Muted</string>
+    <string name="scene_mode_2">volume</string>
+    <string name="rgk_toggle">Toggle</string>
+    <string name="rgk_for">Enable Well rgk for</string>
+    <string name="rgk_for_type0">Homescreen only</string>
+    <string name="rgk_for_type1">Homescreen and all apps</string>
+    <string name="rgk_active_area">Active area position</string>
+    <string name="rgk_area_type0">Bottom left and Bottom right</string>
+    <string name="rgk_area_type1">Bottom left</string>
+    <string name="rgk_area_type2">Bottom right</string>
+    <string name="rgk_about">About</string>
+    <string name="rgk_about_rate5start">Love us?Rate 5 starts</string>
+    <string name="rgk_about_feedback">Feedback</string>
+    <string name="rgk_about_version">App Version</string>
+    <string name="rgk_open_type">Triggering Method</string>
+    <string name="rgk_open_type0">Default(rgk from the bottom corner)</string>
+    <string name="rgk_open_type1">rgk Assist</string>
+    <string name="rgk_advanced_setting">Advanced Settings</string>
+    <string name="feedback_title">fill in the title</string>
+    <string name="feedback_content">fill in the content</string>
+    <string name="flash_on">Flashlight is turned on</string>
+    <string name="flash_off">Flashlight is turned off</string>
+    <string name="wifi_on">WiFi is connected</string>
+    <string name="wifi_off">WiFi is disconnected</string>
+    <string name="bluetooth_on">bluetooth is turned on</string>
+    <string name="bluetooth_off">bluetooth is turned off</string>
+    <string name="request_windows_title">SYSTEM_ALERT_WINDOW</string>
+    <string name="request_windows_content">Well rgk needs permission</string>
+    <string name="request_windows_pos">Start</string>
+    <string name="request_windows_nev">Quit</string>
+    <string name="rgk_nitification_title">Well rgk is running</string>
+    <string name="rgk_nitification_content">touch to view rgk settings</string>
+    <string name="rgk_whitelist_item_unlauncher">White list application is not allowed to start</string>
+
+</resources>
