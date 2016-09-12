@@ -37,44 +37,43 @@ import com.example.util.RgkItemToolsInfo;
 import com.example.util.RgkToolsBean;
 
 public class RgkView extends PositionStateView {
-	/**
-	 * 旋转的基数角度
-	 */
+
+	// 旋转的基数角度
+
 	private float mBaseAngle = 0;
-	/**
-	 * 跟随手指转动的是的变量
-	 */
+
+	// 跟随手指转动的是的变量
+
 	private float mChangeAngle = 0;
-	/**
-	 * 按下时的角度
-	 */
+
+	// 按下时的角度
+
 	private double mDownAngle;
-	/**
-	 * 转轴PivotX,PivotY
-	 */
+
+	// 转轴PivotX,PivotY
+
 	private int mPivotX = 0;
 
 	private int mPivotY = 0;
-	/**
-	 * 控件的宽高
-	 */
+
+	// 控件的宽高
+
 	private int mHeight;
 
 	private int mWidth;
 
-	/**
-	 * 用于计算单击时间的X&Y
-	 */
+	// 用于计算单击时间的X&Y
+
 	private float mMotionX;
 
 	private float mMotionY;
-	/**
-	 * 单击事件的第一个时间
-	 */
+
+	// 单击事件的第一个时间
+
 	private long mClickTime1;
-	/**
-	 * 用来区分点击事件的类型
-	 */
+
+	// 用来区分点击事件的类型
+
 	private int mClickType = -1;
 
 	private static final int TYPE_CLICK = 0;
@@ -83,20 +82,16 @@ public class RgkView extends PositionStateView {
 
 	private static final int TYPE_ADDCLICK = 2;
 
-	private static final int TYPE_LONGCLICK = 3;
-
 	private static final int TYPE_RECENT = 0;
 
 	private static final int TYPE_TOOLS = 1;
 
 	private static final int TYPE_FAVORITE = 2;
-	/**
-	 * AngleView点击时候找到的ItemView
-	 */
+	// AngleView点击时候找到的ItemView
 	RgkItemLayout mTargetItem;
-	/**
-	 * 用于点击或者长按的时候计算得到的当前点击的Item的四个坐标
-	 */
+
+	// 用于点击或者长按的时候计算得到的当前点击的Item的四个坐标
+
 	private float mDownLeft;
 
 	private float mDownTop;
@@ -105,10 +100,8 @@ public class RgkView extends PositionStateView {
 
 	private float mDownBottom;
 
-	private int mDragIndex;
-	/**
-	 * 顺时针/逆时针
-	 */
+	// 顺时针/逆时针
+
 	private int ANGLE_STATE = ANGLE_STATE_REST;
 
 	public static final int ANGLE_STATE_REST = 0;
@@ -172,7 +165,6 @@ public class RgkView extends PositionStateView {
 	/**
 	 * 交换前
 	 */
-	private ArrayList<Coordinate> mExchangePre = new ArrayList<>();
 
 	private OnAngleChangeListener mAngleListener;
 
@@ -825,10 +817,6 @@ public class RgkView extends PositionStateView {
 		canvas.restore();
 	}
 
-	private boolean isMoveDrag = true;
-	
-	
-
 	@Override
 	public boolean onTouchEvent(final MotionEvent event) {
 
@@ -902,11 +890,9 @@ public class RgkView extends PositionStateView {
 		case MotionEvent.ACTION_MOVE:
 			float movenewx = event.getX();
 			float movenewy = event.getY();
-			
-			
+
 			// 如果发生了滑动，则注销点击事件，不注销的话依然会相应长点击事件
-			
-			
+
 			if (Math.abs(movenewx - mMotionX) > 10
 					|| Math.abs(movenewy - mMotionY) > 10) {
 				handler.removeCallbacks(mLongRunable);
@@ -1397,14 +1383,10 @@ public class RgkView extends PositionStateView {
 			public void onAnimationEnd(Animator animation) {
 				int mIndex = ((int) ((mBaseAngle) / DEGREES_90));
 				if (isLeft()) {
-					/**
-					 * getQuaIndex()
-					 */
 					itemLayout(mIndex);
 
 				} else if (isRight()) {
 					itemLayout2(mIndex);
-
 				}
 
 			}
@@ -1473,9 +1455,6 @@ public class RgkView extends PositionStateView {
 				float v = (float) animation.getAnimatedValue();
 				setScaleX(v);
 				setScaleY(v);
-				// itemLayout.setAlpha(v);
-				// mOffListener.change(v);
-				// setAngleLayoutScale(v);
 			}
 		});
 		mAnimator.start();
@@ -1622,11 +1601,6 @@ public class RgkView extends PositionStateView {
 	 * 长按item后，显示删除按钮
 	 */
 	public void startEditMode() {
-		/*
-		 * AngleItemStartUp angleItemStartUp = (AngleItemStartUp) rgkItemLayout;
-		 * 
-		 * showAnimator(angleItemStartUp);
-		 */
 
 		int index = getViewsIndex();
 
@@ -1674,15 +1648,10 @@ public class RgkView extends PositionStateView {
 		alphaAnim.start();
 	}
 
-	/*
-	 * public void removeBubble() { mFavoriteLayout.setVisibility(View.GONE); }
-	 */
-
 	/**
 	 * 退出当前编辑模式，遍历当前的Views集合，隐藏编辑按钮
 	 */
 	public void endEditMode() {
-		isMoveDrag = true;
 		int index = getViewsIndex();
 		for (int i = 0; i < mMap.get(index).size(); i++) {
 			RgkItemLayout item = mMap.get(index).get(i);
