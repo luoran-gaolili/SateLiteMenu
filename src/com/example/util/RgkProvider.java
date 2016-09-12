@@ -310,7 +310,7 @@ public class RgkProvider extends ContentProvider {
 			/**
 			 * 判断是否安装
 			 */
-			if (!RgkUtils.isApkInstalled(mContext, packageName)) {
+			if (!Utilities.isApkInstalled(mContext, packageName)) {
 				hasPackage = false;
 			}
 			if (hasPackage) {

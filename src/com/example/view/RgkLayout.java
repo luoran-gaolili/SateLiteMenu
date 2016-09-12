@@ -5,8 +5,6 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -16,11 +14,8 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 
 import com.example.satelitemenu.R;
-import com.example.util.RgkItemAppsInfo;
-import com.example.util.RgkItemToolsInfo;
 import com.example.util.RgkPositionState;
-import com.example.util.RgkToolsBean;
-import com.example.util.RgkUtils;
+import com.example.util.Utilities;
 import com.example.util.onChangeListener;
 
 public class RgkLayout extends FrameLayout implements
@@ -650,7 +645,7 @@ public class RgkLayout extends FrameLayout implements
 	public void setPositionLeft() {
 		setPivotX(0);
 		setPivotY(mContext.getResources().getDisplayMetrics().heightPixels
-				- RgkUtils.getStatusBarHeight(mContext));
+				- Utilities.getStatusBarHeight(mContext));
 		setPositionState(RgkPositionState.POSITION_STATE_LEFT);
 		/**
 		 * 左右两边的的角度一样，但是显示的限象不一样，通过一个公倍数12来换算成限象一样
@@ -682,7 +677,7 @@ public class RgkLayout extends FrameLayout implements
 	public void setPositionRight() {
 		setPivotX(mContext.getResources().getDisplayMetrics().widthPixels);
 		setPivotY(mContext.getResources().getDisplayMetrics().heightPixels
-				- RgkUtils.getStatusBarHeight(mContext));
+				- Utilities.getStatusBarHeight(mContext));
 		setPositionState(RgkPositionState.POSITION_STATE_RIGHT);
 
 		/**
