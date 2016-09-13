@@ -28,11 +28,4 @@ public class RgkToolsList {
             mSwipeDataList.add(itemswitch);
         }
     }
-
-    public void printF() {
-        for (int i = 0; i < mSwipeDataList.size(); i++) {
-            
-        }
-    }
-
 }

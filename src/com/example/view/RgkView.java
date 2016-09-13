@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
@@ -167,6 +168,9 @@ public class RgkView extends PositionStateView {
 	/**
 	 * 交换前
 	 */
+
+	// 判断移除item是否已经结束
+	private boolean isRemoveFinish = true;
 
 	private OnAngleChangeListener mAngleListener;
 
@@ -498,40 +502,39 @@ public class RgkView extends PositionStateView {
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		// 0 11
-		
-		
+
 		int index = (int) ((mBaseAngle) / DEGREES_90);
-		
+
 		if (isLeft()) {
-			
+
 			itemLayout(index);
-			
+
 		} else if (isRight()) {
-			
+
 			itemLayout2(index);
 		}
 	}
 
 	/**
 	 * view left
-	 *  
+	 * 
 	 * @param index
 	 */
 	private void itemLayout(int index) {
 
 		// getPreViewsIndex(getViewsIndex(index)) 0 1 2
 		mCurrentIndex = getRealIndex(index);
-		Log.d(TAG,"getPreViewsIndex:"+getPreViewsIndex(getViewsIndex(index))); 
-		Log.d(TAG,"getViewsIndex:"+getViewsIndex(index));
-		Log.d(TAG,"getNextViewsIndex:"+getNextViewsIndex(getViewsIndex(index)));
-		
-		
+		Log.d(TAG, "getPreViewsIndex:" + getPreViewsIndex(getViewsIndex(index)));
+		Log.d(TAG, "getViewsIndex:" + getViewsIndex(index));
+		Log.d(TAG, "getNextViewsIndex:"
+				+ getNextViewsIndex(getViewsIndex(index)));
+		Log.d(TAG, "mBaseAngle:" + mBaseAngle);
+
 		itemLayout(mMap.get(getPreViewsIndex(getViewsIndex(index))),
 				getPreQuaIndex(getQuaIndex(index)));
-        
+
 		itemLayout(mMap.get(getViewsIndex(index)), getQuaIndex(index));
-		
-		
+
 		itemLayout(mMap.get(getNextViewsIndex(getViewsIndex(index))),
 				getNextQuaIndex(getQuaIndex(index)));
 	}
@@ -857,14 +860,12 @@ public class RgkView extends PositionStateView {
 						mTargetItem = views.get(index);
 						mTargetItem.setIndex(index);
 
-						/**
-                             *
-                             */
 						if (mTargetItem instanceof AngleItemStartUp) {
 							if (((AngleItemStartUp) mTargetItem).getDelBtn()
 									.getVisibility() == View.GONE) {
 
 								mClickType = TYPE_CLICK;
+								
 							} else if (mMotionX > mDownLeft
 									&& mMotionX < (mDownLeft + mDeleteBtnSize)
 									&& mMotionY > mDownTop
@@ -986,8 +987,6 @@ public class RgkView extends PositionStateView {
 		isRestoreFinish = isResore;
 	}
 
-	private boolean isRemoveFinish = true;
-
 	/**
 	 * 移除动画
 	 */
@@ -1026,6 +1025,7 @@ public class RgkView extends PositionStateView {
 							 * size按照当前views的总数，以4为区分，分别计算出<4,=4,超出4的部分剪掉4即从1，2，
 							 * 3重新开始计数
 							 */
+							// 删除item以后，更新新坐标
 							mDelNext.add(coordinate(views, index, getQuaIndex()));
 						}
 					}
@@ -1110,13 +1110,6 @@ public class RgkView extends PositionStateView {
 		translation.start();
 	}
 
-	public void exchange(final Coordinate recource, RgkItemLayout targetview,
-			final int index) {
-
-	}
-
-	boolean isExChangeFinish = true;
-
 	public void setOnAngleChangeListener(OnAngleChangeListener listener) {
 		mAngleListener = listener;
 	}
@@ -1150,7 +1143,9 @@ public class RgkView extends PositionStateView {
 		double diffAngle;
 		double angle;
 		angle = Math.toDegrees(Math.atan(x / y));
+		// 计算角度的变化量
 		diffAngle = angle - mDownAngle;
+
 		if (diffAngle > 0) {
 			ANGLE_STATE = ANGLE_STATE_ALONG;
 		} else {
@@ -1159,6 +1154,7 @@ public class RgkView extends PositionStateView {
 		if (isLeft()) {
 			changeAngle(diffAngle);
 		} else if (isRight()) {
+
 			changeAngle(-diffAngle);
 		}
 	}
@@ -1280,36 +1276,25 @@ public class RgkView extends PositionStateView {
 
 	}
 
-	/**
-	 * 顺时针到下一个90度
-	 */
+	// 顺时针转动90度 0-1
 	private void flingForward() {
-		autoWhirling(getAngleValues(),
+		autoRotation(getAngleValues(),
 				((int) (getAngleValues() / DEGREES_90) + 1) * DEGREES_90);
 	}
 
-	/**
-	 * 回到当前的角度
-	 */
+	// 回到当前的位置
 	private void flingCurrnet() {
-		autoWhirling(getAngleValues(), ((int) (getAngleValues() / DEGREES_90))
+		autoRotation(getAngleValues(), ((int) (getAngleValues() / DEGREES_90))
 				* DEGREES_90);
 	}
 
-	/**
-	 * 逆时针到上一个90度
-	 */
+	// 逆时针旋转90度
 	private void flingReveser() {
-		autoWhirling(getAngleValues(),
+		autoRotation(getAngleValues(),
 				((int) (getAngleValues() / DEGREES_90) - 1) * DEGREES_90);
 	}
 
-	/**
-	 * 根据当前的数据组和点击情况来切换AngleIndicator
-	 * 
-	 * @param cur
-	 *            当前被点击的指示器索引
-	 */
+	// 根据旋转和点击的情况来判断view索要落在的位置
 	public void setViewsIndex(int cur) {
 		if (isLeft()) {
 			int index = getViewsIndex((int) (getAngleValues() / DEGREES_90));
@@ -1357,19 +1342,12 @@ public class RgkView extends PositionStateView {
 
 	}
 
-	/**
-	 * 自动旋转
-	 * 
-	 * @param start
-	 *            起始位置
-	 * @param end
-	 *            结束为止
-	 */
-	private void autoWhirling(float start, float end) {
+	// 滑动的过程
+	private void autoRotation(float start, float end) {
 		mChangeAngle = 0;
 		mAngleAnimator = ValueAnimator.ofFloat(start, end);
 		mAngleAnimator.setDuration(500);
-		mAngleAnimator.setInterpolator(new DecelerateInterpolator());
+		mAngleAnimator.setInterpolator(new OvershootInterpolator());
 		mAngleAnimator
 				.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 					@Override
@@ -1390,6 +1368,8 @@ public class RgkView extends PositionStateView {
 			public void onAnimationEnd(Animator animation) {
 				int mIndex = ((int) ((mBaseAngle) / DEGREES_90));
 				if (isLeft()) {
+
+					Log.d(TAG, "autoWhirling isLeft()");
 					itemLayout(mIndex);
 
 				} else if (isRight()) {
@@ -1424,7 +1404,7 @@ public class RgkView extends PositionStateView {
 	public float getAngleValues() {
 		float newrotation = (mBaseAngle + mChangeAngle);
 
-		Log.d("LUORAN56", "newrotation:" + newrotation);
+		Log.d("LUORAN56789", "newrotation:" + newrotation);
 		return newrotation < 0 ? DEGREES_1080 + (newrotation) : (newrotation);
 	}
 
@@ -1435,36 +1415,6 @@ public class RgkView extends PositionStateView {
 	public void setBaseAngle(float angle) {
 		mBaseAngle = angle;
 		angleChange();
-		Log.d("LUORANHHR", "mMap" + mMap.size());
-	}
-
-	public void setItemstartAnimator(int index) {
-
-		ArrayList<RgkItemLayout> rgkItemLayouts = mMap.get(index);
-
-		Log.d("LUORAN999", "rgkItemLayouts" + rgkItemLayouts.size());
-		if (rgkItemLayouts != null) {
-			for (RgkItemLayout itemLayout : rgkItemLayouts) {
-
-				startAnimator(itemLayout);
-			}
-		}
-	}
-
-	private void startAnimator(final RgkItemLayout itemLayout) {
-		// TODO Auto-generated method stub
-		ValueAnimator mAnimator = ValueAnimator.ofFloat(0f, 1.0f);
-		mAnimator.setDuration(500);
-		// mAnimator.setInterpolator(new OvershootInterpolator(1.2f));
-		mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-			@Override
-			public void onAnimationUpdate(ValueAnimator animation) {
-				float v = (float) animation.getAnimatedValue();
-				setScaleX(v);
-				setScaleY(v);
-			}
-		});
-		mAnimator.start();
 	}
 
 	public int getCurrentIndex() {
@@ -1524,13 +1474,7 @@ public class RgkView extends PositionStateView {
 		return index == COUNT_3 ? 0 : (index + 1);
 	}
 
-	/**
-	 * 根据index获取当先index所需要的数据索引 比如: 11->1,10->2,9->0,8->1,7->2,6->0 像这样一直循环
-	 * 
-	 * @param index
-	 *            转动结束后根据BaseAngle的值除以90得出的范围0-11 3,4的最小公倍数的是12
-	 * @return
-	 */
+	// 第一次打开时候index默认为0，然后 1 2 就这样 一直循环
 	private int getViewsIndex(int index) {
 		return (COUNT_12 - index) % COUNT_3;
 	}

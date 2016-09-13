@@ -36,8 +36,6 @@ public class RgkItemAppsInfo extends ItemInfo {
 
 	int flags = 0;
 
-	long mFirstInstallTime;
-
 	static final int DOWNLOADED_FLAG = 1;
 
 	static final int UPDATED_SYSTEM_APP_FLAG = 2;
@@ -51,7 +49,6 @@ public class RgkItemAppsInfo extends ItemInfo {
 		mIntent = appinfo.mIntent;
 		mIconBitmap = appinfo.mIconBitmap;
 		mComponentName = appinfo.mComponentName;
-		mFirstInstallTime = appinfo.mFirstInstallTime;
 	}
 
 	public RgkItemAppsInfo(PackageManager manager, ResolveInfo info,
@@ -60,18 +57,6 @@ public class RgkItemAppsInfo extends ItemInfo {
 		mComponentName = new ComponentName(packageName, info.activityInfo.name);
 		setActivity(mComponentName, Intent.FLAG_ACTIVITY_NEW_TASK
 				| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-		try {
-			int appFlags = manager.getApplicationInfo(packageName, 0).flags;
-			if ((appFlags & android.content.pm.ApplicationInfo.FLAG_SYSTEM) == 0) {
-				flags |= DOWNLOADED_FLAG;
-				if ((appFlags & android.content.pm.ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
-					flags |= UPDATED_SYSTEM_APP_FLAG;
-				}
-			}
-			mFirstInstallTime = manager.getPackageInfo(packageName, 0).firstInstallTime;
-		} catch (PackageManager.NameNotFoundException e) {
-			e.printStackTrace();
-		}
 		iconcache.getTitleAndIcon(this, info, lable);
 	}
 
@@ -121,7 +106,8 @@ public class RgkItemAppsInfo extends ItemInfo {
 			Drawable drawable = appinfo.loadIcon(packageManager);
 			BitmapDrawable bd = (BitmapDrawable) drawable;
 			ContentValues values = new ContentValues();
-			values.put(RgkItemSettings.BaseColumns.ITEM_TITLE, mTitle.toString());
+			values.put(RgkItemSettings.BaseColumns.ITEM_TITLE,
+					mTitle.toString());
 			values.put(RgkItemSettings.BaseColumns.ITEM_INTENT, intent.toUri(0));
 			values.put(RgkItemSettings.BaseColumns.ITEM_INDEX, index);
 			values.put(RgkItemSettings.BaseColumns.ITEM_TYPE,

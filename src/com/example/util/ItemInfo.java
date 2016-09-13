@@ -25,7 +25,7 @@ public class ItemInfo {
     int mIndex;
 
 
-    ItemInfo() {
+    public ItemInfo() {
 
     }
 

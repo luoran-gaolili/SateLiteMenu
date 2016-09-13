@@ -583,6 +583,9 @@ public class RgkLayout extends FrameLayout implements
 		mIndicatorTheme.changeStartAngle(cur, p);
 	}
 
+	
+	
+	//index发生变化的时候
 	@Override
 	public void onIndexChanged(int index) {
 		/**
@@ -594,6 +597,9 @@ public class RgkLayout extends FrameLayout implements
 			mAngleView.setViewsIndex(index);
 		}
 	}
+	
+	
+	
 
 	@Override
 	public void onEnterEditMode(View view) {

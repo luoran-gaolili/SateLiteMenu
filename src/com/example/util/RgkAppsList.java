@@ -39,13 +39,6 @@ public class RgkAppsList {
 		added.add(info);
 	}
 
-	public void addHomePackage(RgkItemAppsInfo info) {
-		if (findActivity(homeapps, info.mComponentName)) {
-			return;
-		}
-		homeapps.add(info);
-	}
-
 	public void clear() {
 		data.clear();
 		// TODO: do we clear these too?
@@ -62,16 +55,6 @@ public class RgkAppsList {
 		return data.get(index);
 	}
 
-	public void addHomePackage(Context context) {
-		List<ResolveInfo> list = findHomePackage(context);
-		if (list.size() > 0) {
-			for (ResolveInfo info : list) {
-				addHomePackage(new RgkItemAppsInfo(context.getPackageManager(),
-						info, mIconCache, null));
-			}
-		}
-	}
-
 	private static boolean findActivity(ArrayList<RgkItemAppsInfo> apps,
 			ComponentName component) {
 		final int N = apps.size();
@@ -82,21 +65,6 @@ public class RgkAppsList {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * 查找Homeapp
-	 * 
-	 * @param context
-	 * @return
-	 */
-	private static List<ResolveInfo> findHomePackage(Context context) {
-		PackageManager packageManager = context.getPackageManager();
-		Intent intent = new Intent(Intent.ACTION_MAIN);
-		intent.addCategory(Intent.CATEGORY_HOME);
-		List<ResolveInfo> apps = packageManager.queryIntentActivities(intent,
-				PackageManager.MATCH_DEFAULT_ONLY);
-		return apps != null ? apps : new ArrayList<ResolveInfo>();
 	}
 
 }

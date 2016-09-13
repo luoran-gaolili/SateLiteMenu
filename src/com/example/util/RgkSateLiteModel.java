@@ -168,18 +168,8 @@ public class RgkSateLiteModel {
 
 			case RgkItemSettings.BaseColumns.ICON_TYPE_BITMAP:
 				icon = getIconFromCursor(cursor, iconIndex, context);
-				if (icon == null) {
-					icon = getFallbackIcon();
-					application.isCustomIcon = false;
-					application.isFallbackIcon = true;
-				} else {
-					application.isCustomIcon = true;
-				}
 				break;
 			default:
-				icon = getFallbackIcon();
-				application.isFallbackIcon = true;
-				application.isCustomIcon = false;
 				break;
 			}
 			application.mIconBitmap = icon;
@@ -251,13 +241,12 @@ public class RgkSateLiteModel {
 
 		@Override
 		public void run() {
+			// 解析数据存入数据库
 			loadDefaultWorkspace();
 			bindFavorites();
 			bindSwitch();
 			bindFinish();
 			loadAndBindAllApps();
-			loadHomePackage();
-
 		}
 
 		private void loadDefaultWorkspace() {
@@ -274,9 +263,9 @@ public class RgkSateLiteModel {
 			PackageManager manager = mContext.getPackageManager();
 			List<ResolveInfo> mInfoLists = manager.queryIntentActivities(
 					mainIntent, 0);
-			Collections.sort(mInfoLists,
+		/*	Collections.sort(mInfoLists,
 					new RgkSateLiteModel.ShortcutNameComparator(manager,
-							mLabelCache));
+							mLabelCache));*/
 
 			if (mAllAppsList.data.size() > 0) {
 				mAllAppsList.data.clear();
@@ -285,22 +274,10 @@ public class RgkSateLiteModel {
 				mAllAppsList.data.add(new RgkItemAppsInfo(manager, mInfoLists
 						.get(i), mIconCache, mLabelCache));
 			}
-			ArrayList<RgkItemAppsInfo> applications = new ArrayList<>();
-			if (applications.size() > 0) {
-				applications.clear();
-			}
-			applications.addAll(mAllAppsList.data);
-
-			mCallback.get().bindAllApps(applications);
 
 		}
-
-		private void loadHomePackage() {
-			mAllAppsList.addHomePackage(mContext);
-		}
-
 		/**
-		 * 从表中读出数据传到Service
+		 * 从表中读出数据传到Service(回调)
 		 */
 		public void bindFavorites() {
 			ContentResolver resolver = mContext.getContentResolver();
@@ -341,18 +318,8 @@ public class RgkSateLiteModel {
 
 				case RgkItemSettings.BaseColumns.ICON_TYPE_BITMAP:
 					icon = getIconFromCursor(cursor, iconIndex, mContext);
-					if (icon == null) {
-						icon = getFallbackIcon();
-						application.isCustomIcon = false;
-						application.isFallbackIcon = true;
-					} else {
-						application.isCustomIcon = true;
-					}
 					break;
 				default:
-					icon = getFallbackIcon();
-					application.isFallbackIcon = true;
-					application.isCustomIcon = false;
 					break;
 				}
 				application.mIconBitmap = icon;
