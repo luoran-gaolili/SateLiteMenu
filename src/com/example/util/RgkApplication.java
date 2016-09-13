@@ -16,7 +16,7 @@ public class RgkApplication extends Application {
 	private RgkSateLiteModel mModel;
 
 	private RgkAppIconCache mIconCache;
-
+	// 使用弱引用，以便及时可以回收内存
 	private WeakReference<RgkProvider> mSwipeProvider;
 
 	@Override

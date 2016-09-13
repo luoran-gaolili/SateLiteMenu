@@ -302,10 +302,6 @@ public class RgkSateLiteService extends Service implements
 				+ mLauncherModel.loadRecentTask(this).size());
 	}
 
-	@Override
-	public void bindStart() {
-	}
-
 	// 接口回调传递数据
 	@Override
 	public void bindAllApps(ArrayList<RgkItemAppsInfo> appslist) {
@@ -490,6 +486,7 @@ public class RgkSateLiteService extends Service implements
 
 	}
 
+	// 对话框的确定按钮
 	@Override
 	public void onPositive(View view) {
 		// TODO Auto-generated method stub
@@ -530,6 +527,7 @@ public class RgkSateLiteService extends Service implements
 		}
 	}
 
+	// 对话框的取消按钮
 	@Override
 	public void onNegative(View view) {
 		// TODO Auto-generated method stub

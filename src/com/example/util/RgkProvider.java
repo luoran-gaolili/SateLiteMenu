@@ -52,12 +52,10 @@ public class RgkProvider extends ContentProvider {
 
 	private static final String PREFERENCE_KEY = "isFirstLoad";
 
+	public static final String TAG = "RgkProvider";
+
 	static {
 		mUriMatcher.addURI("com.rgk.satelist.provider", "favorites", 1);
-
-	}
-
-	public RgkProvider() {
 
 	}
 
@@ -205,11 +203,9 @@ public class RgkProvider extends ContentProvider {
 
 		private final String TAG_QUICKSWITCH = "quicksswitch";
 
-		private static final String DATEBASE_NAME = "wellswipe.db";
+		private static final String DATEBASE_NAME = "rgksatelite.db";
 
 		private static final int DATABASE_VERSION = 12;
-
-		private int LENGTH = 9;
 
 		public DatabaseHelper(Context context) {
 			super(context, DATEBASE_NAME, null, DATABASE_VERSION);
@@ -225,9 +221,7 @@ public class RgkProvider extends ContentProvider {
 					+ "item_index INTEGER,"
 					+ "item_action VARCHAR,"
 					+ "icon_type INTEGER,"
-					+ "icon_package VARCHAR,"
-					+ "icon_resource VARCHAR,"
-					+ "icon_bitmap BLOB)");
+					+ "icon_package VARCHAR," + "icon_bitmap BLOB)");
 		}
 
 		@Override
@@ -283,18 +277,8 @@ public class RgkProvider extends ContentProvider {
 			}
 		}
 
-		/**
-		 * 从default_workspace中读取配置数据，然后存入数据库
-		 * 
-		 * @param database
-		 * @param values
-		 * @param array
-		 * @param packageManager
-		 * @param intent
-		 * @return
-		 * @throws XmlPullParserException
-		 * @throws IOException
-		 */
+		// 从default_workspace中读取配置数据，然后存入数据库
+
 		private boolean addFavorite(SQLiteDatabase database,
 				ContentValues values, TypedArray array,
 				PackageManager packageManager, Intent intent)
@@ -332,6 +316,9 @@ public class RgkProvider extends ContentProvider {
 							R.styleable.Favorite_item_index, 0);
 					values.put(RgkItemSettings.BaseColumns.ITEM_TITLE,
 							item_title);
+					// 序列化intent(序列化原因:让数据变为可传输和可存储状态，一个对象序列化以后就可以在网络上进行传输)
+					Log.d(TAG, "intent:" + intent);
+					Log.d(TAG, "intent:" + intent.toUri(0));
 					values.put(RgkItemSettings.BaseColumns.ITEM_INTENT,
 							intent.toUri(0));
 					values.put(RgkItemSettings.BaseColumns.ITEM_INDEX,
@@ -340,7 +327,7 @@ public class RgkProvider extends ContentProvider {
 							RgkItemSettings.BaseColumns.ITEM_TYPE_APPLICATION);
 					values.put(RgkItemSettings.BaseColumns.ICON_TYPE,
 							RgkItemSettings.BaseColumns.ICON_TYPE_BITMAP);
-					// 把bitmap存入数据库
+					// 把bitmap存入数据库 (数据库里面定义的为BLOB类型，需要存入二进制数据进去)
 					values.put(RgkItemSettings.BaseColumns.ICON_BITMAP,
 							flattenBitmap(bd.getBitmap()));
 
@@ -434,7 +421,9 @@ public class RgkProvider extends ContentProvider {
 			ByteArrayOutputStream out = new ByteArrayOutputStream(size);
 			try {
 				// 100 表示不压缩图片
-				bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+				if (out != null) {
+					bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+				}
 				out.flush();
 				out.close();
 				return out.toByteArray();

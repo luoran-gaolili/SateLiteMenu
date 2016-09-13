@@ -50,8 +50,6 @@ public class RgkSateLiteModel {
 	 */
 	private RgkAppIconCache mIconCache;
 
-	private final Handler mWorker = new Handler();
-
 	private Callback mCallBack;
 
 	private WeakReference<Callback> mCallback;
@@ -65,9 +63,6 @@ public class RgkSateLiteModel {
 	// 创建接口用于回调
 
 	public interface Callback {
-		// 开始加载的时候回调
-		void bindStart();
-
 		// 绑定所有的app
 		void bindAllApps(ArrayList<RgkItemAppsInfo> appslist);
 
@@ -94,9 +89,11 @@ public class RgkSateLiteModel {
 		mCallback = new WeakReference<>(callback);
 	}
 
+	// 开始加载数据
 	public void startLoadTask() {
 		mLoadTask = new LoadTask(mApplication);
-		mLoadTask.run();
+		Thread thread = new Thread(mLoadTask);
+		thread.start();
 	}
 
 	public RgkAppsList getAllAppsList() {
@@ -127,7 +124,7 @@ public class RgkSateLiteModel {
 	}
 
 	/**
-	 * 读当前的FavoriteApp数据
+	 * 点击加号弹出对话框内容
 	 * 
 	 * @param context
 	 * @return
@@ -151,14 +148,11 @@ public class RgkSateLiteModel {
 					.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_INTENT));
 			int iconType = cursor.getInt(cursor
 					.getColumnIndex(RgkItemSettings.BaseColumns.ICON_TYPE));
-			int packagenameIndex = cursor
-					.getColumnIndex(RgkItemSettings.BaseColumns.ICON_PACKAGENAME);
-			int resourcenameIndex = cursor
-					.getColumnIndex(RgkItemSettings.BaseColumns.ICON_RESOURCE);
 			int iconIndex = cursor
 					.getColumnIndex(RgkItemSettings.BaseColumns.ICON_BITMAP);
 			Intent intent = null;
 			Bitmap icon = null;
+			// 对intent进行反序列化
 			try {
 				intent = Intent.parseUri(intentStr, 0);
 			} catch (URISyntaxException e) {
@@ -196,6 +190,7 @@ public class RgkSateLiteModel {
 		return favorites;
 	}
 
+	// 点击加号弹出对话框内容
 	public ArrayList<RgkItemToolsInfo> loadTools(Context context) {
 		ContentResolver resolver = context.getContentResolver();
 		Cursor cursor = resolver
@@ -242,10 +237,6 @@ public class RgkSateLiteModel {
 
 	}
 
-	public void loafFavorite() {
-		mLoadTask.bindFavorites();
-	}
-
 	// 开启异步加载内容
 	private class LoadTask implements Runnable {
 
@@ -260,12 +251,10 @@ public class RgkSateLiteModel {
 
 		@Override
 		public void run() {
-			bindStart();
 			loadDefaultWorkspace();
 			bindFavorites();
 			bindSwitch();
 			bindFinish();
-
 			loadAndBindAllApps();
 			loadHomePackage();
 
@@ -336,13 +325,8 @@ public class RgkSateLiteModel {
 								.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_INTENT));
 				int iconType = cursor.getInt(cursor
 						.getColumnIndex(RgkItemSettings.BaseColumns.ICON_TYPE));
-				int packagenameIndex = cursor
-						.getColumnIndex(RgkItemSettings.BaseColumns.ICON_PACKAGENAME);
-				int resourcenameIndex = cursor
-						.getColumnIndex(RgkItemSettings.BaseColumns.ICON_RESOURCE);
 				int iconIndex = cursor
 						.getColumnIndex(RgkItemSettings.BaseColumns.ICON_BITMAP);
-
 				try {
 					intent = Intent.parseUri(intentStr, 0);
 				} catch (URISyntaxException e) {
@@ -406,10 +390,6 @@ public class RgkSateLiteModel {
 			}
 			cursor.close();
 			mCallback.get().bindSwitch(switches);
-		}
-
-		private void bindStart() {
-			mCallback.get().bindStart();
 		}
 
 		private void bindFinish() {

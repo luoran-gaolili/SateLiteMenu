@@ -360,11 +360,7 @@ public class RgkView extends PositionStateView {
 					.inflate(R.layout.angle_item_startup, null);
 			itemview.setTitle(appitem.mTitle.toString());
 
-			/*
-			 * itemview.setItemIconBackground(getResources().getDrawable(
-			 * R.drawable.angle_item_bg));
-			 */
-
+			// 加载tools的icon
 			RgkToolsBean.getInstance()
 					.initView(getContext(), itemview, appitem);
 
