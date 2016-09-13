@@ -140,6 +140,8 @@ public class RgkView extends PositionStateView {
 
 	private static final int COUNT_12 = COUNT_4 * COUNT_3;
 
+	private static final String TAG = "RgkView";
+
 	private int mCurrentIndex;
 
 	private ValueAnimator mAngleAnimator;
@@ -307,6 +309,7 @@ public class RgkView extends PositionStateView {
 		requestLayout();
 	}
 
+	// 加载app数据到map集合里面
 	public void putItemApplications(ArrayList<RgkItemAppsInfo> itemlist) {
 		if (mMap.get(TYPE_FAVORITE).size() > 0) {
 			mMap.get(TYPE_FAVORITE).clear();
@@ -348,7 +351,7 @@ public class RgkView extends PositionStateView {
 		return null;
 	}
 
-	// 初始化快捷方式的icon和title
+	// 初始化快捷方式的icon和title并加载tools数据到map集合里面
 	public void putItemQuickSwitch(ArrayList<RgkItemToolsInfo> itemlist) {
 		if (mMap.get(TYPE_TOOLS).size() > 0) {
 			mMap.get(TYPE_TOOLS).clear();
@@ -457,10 +460,6 @@ public class RgkView extends PositionStateView {
 		}
 
 		refresh();
-
-		/**
-		 * 绑定万Recent之后调用
-		 */
 		mOnBindListener.bindComplete();
 	}
 
@@ -499,34 +498,46 @@ public class RgkView extends PositionStateView {
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		// 0 11
+		
+		
 		int index = (int) ((mBaseAngle) / DEGREES_90);
-		Log.d("LUORAN88", "mBaseAngle:" + mBaseAngle);
-		Log.d("LUORAN88", "index:" + index);
+		
 		if (isLeft()) {
+			
 			itemLayout(index);
+			
 		} else if (isRight()) {
+			
 			itemLayout2(index);
 		}
 	}
 
 	/**
-	 * 布局子控件 通过一个当前值，计算上一个，下一个值
-	 * 
+	 * view left
+	 *  
 	 * @param index
 	 */
 	private void itemLayout(int index) {
+
+		// getPreViewsIndex(getViewsIndex(index)) 0 1 2
 		mCurrentIndex = getRealIndex(index);
-		Log.d("LUORAN88", "mCurrentIndex:" + mCurrentIndex);
+		Log.d(TAG,"getPreViewsIndex:"+getPreViewsIndex(getViewsIndex(index))); 
+		Log.d(TAG,"getViewsIndex:"+getViewsIndex(index));
+		Log.d(TAG,"getNextViewsIndex:"+getNextViewsIndex(getViewsIndex(index)));
+		
+		
 		itemLayout(mMap.get(getPreViewsIndex(getViewsIndex(index))),
 				getPreQuaIndex(getQuaIndex(index)));
-
+        
 		itemLayout(mMap.get(getViewsIndex(index)), getQuaIndex(index));
+		
+		
 		itemLayout(mMap.get(getNextViewsIndex(getViewsIndex(index))),
 				getNextQuaIndex(getQuaIndex(index)));
 	}
 
 	/**
-	 * mPositionState＝Right的时候
+	 * view right
 	 * 
 	 * @param index
 	 */

@@ -334,7 +334,7 @@ public class RgkProvider extends ContentProvider {
 					/**
 					 * 如果表里已经包含了存在的index，就不在插入了
 					 */
-					if (!hasIndex(database, item_index,
+					if (!isIndexExists(database, item_index,
 							RgkItemSettings.BaseColumns.ITEM_TYPE_APPLICATION)) {
 						checkInsert(database, TAG_FAORITES, values);
 					}
@@ -348,6 +348,7 @@ public class RgkProvider extends ContentProvider {
 			return true;
 		}
 
+		// 添加快捷工具到数据库
 		public boolean addQuickSwith(SQLiteDatabase database,
 				ContentValues values, TypedArray array,
 				PackageManager packageManager) {
@@ -368,7 +369,7 @@ public class RgkProvider extends ContentProvider {
 					RgkItemSettings.BaseColumns.ITEM_TYPE_SWITCH);
 			values.put(RgkItemSettings.BaseColumns.ITEM_ACTION, item_action);
 
-			if (!hasIndex(database, item_index,
+			if (!isIndexExists(database, item_index,
 					RgkItemSettings.BaseColumns.ITEM_TYPE_SWITCH)) {
 				checkInsert(database, TAG_FAORITES, values);
 			}
@@ -376,15 +377,10 @@ public class RgkProvider extends ContentProvider {
 			return true;
 		}
 
-		/**
-		 * 存表之前每次检查一边表中是否已经存在可当前读取到的index的app，如果有就跳过读下一个 没有才回存表
-		 * 
-		 * @param database
-		 * @param target
-		 * @param type
-		 * @return
-		 */
-		private boolean hasIndex(SQLiteDatabase database, int target, int type) {
+		// 存表之前每次检查一边表中是否已经存在可当前读取到的index的app，如果有就跳过读下一个 没有才回存表
+
+		private boolean isIndexExists(SQLiteDatabase database, int target,
+				int type) {
 			Cursor cursor = database.rawQuery(
 					"select item_index from favorites where item_type=" + type,
 					null);
@@ -393,7 +389,7 @@ public class RgkProvider extends ContentProvider {
 				if (cursor.getCount() > 0) {
 					while (cursor.moveToNext()) {
 						index.add(cursor.getInt(cursor
-								.getColumnIndexOrThrow(RgkItemSettings.BaseColumns.ITEM_INDEX)));
+								.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_INDEX)));
 					}
 				} else {
 					return false;
