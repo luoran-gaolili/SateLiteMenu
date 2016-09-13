@@ -506,6 +506,7 @@ public class RgkLayout extends FrameLayout implements
 			float vx = mVelocityTracker.getXVelocity();
 			float vy = mVelocityTracker.getYVelocity();
 			if (mEditState == STATE_NORMAL && MOVE_TYPE == TYPE_ROTATION) {
+				// 开始滑动
 				mAngleView.fling(vx, vy);
 			}
 
@@ -583,9 +584,7 @@ public class RgkLayout extends FrameLayout implements
 		mIndicatorTheme.changeStartAngle(cur, p);
 	}
 
-	
-	
-	//index发生变化的时候
+	// index发生变化的时候
 	@Override
 	public void onIndexChanged(int index) {
 		/**
@@ -597,9 +596,6 @@ public class RgkLayout extends FrameLayout implements
 			mAngleView.setViewsIndex(index);
 		}
 	}
-	
-	
-	
 
 	@Override
 	public void onEnterEditMode(View view) {

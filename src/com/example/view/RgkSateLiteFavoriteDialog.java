@@ -103,9 +103,9 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 		mList = new ArrayList<>();
 
 		// en cn
+		// 获得手机当前的语言环境
 		String language = Locale.getDefault().getLanguage();
 
-		Log.d("LUORAN1235", "language" + language);
 		// 不区分大小写英文单词 一个或多个
 		Pattern pattern = Pattern.compile("^[A-Za-z]+$");
 		for (int i = 0; i < datalist.size(); i++) {
@@ -122,16 +122,13 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 
 					contains(String.valueOf(key), app);
 				} else if (pattern.matcher(String.valueOf(key)).matches()) {
-					Log.d("HHHH", "patternKey" + key);
 					contains(String.valueOf(key), app);
 				} else if (Locale.ENGLISH.getLanguage().equalsIgnoreCase(
 						language)) {
-					Log.d("HHHH", "Locale.ENGLISH" + key);
 					contains(String.valueOf(key), app);
 
 				} else if (Locale.CHINA.getLanguage()
 						.equalsIgnoreCase(language)) {
-					Log.d("HHHH", "Locale.CHINA" + key);
 					ArrayList<Pinyin.Token> tokens = Pinyin.getInstance().get(
 							app.mTitle.toString());
 					if (tokens != null && tokens.size() > 0) {
@@ -142,7 +139,6 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 									.substring(0, 1).charAt(0)
 									+ "";
 
-							Log.d("HHR", "pinyin" + pinyin);
 							contains(String.valueOf(pinyin), app);
 						} else {
 						}
@@ -174,7 +170,6 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 			mApplist = new ArrayList<>();
 			// Log.d("HHHHH", "mApplist" + mApplist.size());
 			mApplist.add(app);
-			Log.d("HHHHH", "mDataList" + mDataList.size());
 		} else {
 			mApplist = mDataList.get(key);
 			mApplist.add(app);

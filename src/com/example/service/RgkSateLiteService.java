@@ -450,8 +450,6 @@ public class RgkSateLiteService extends Service implements
 					// 静音 震动 铃声
 				} else if (action
 						.equals(AudioManager.RINGER_MODE_CHANGED_ACTION)) {
-					Log.d("LUORANHAHA", "AudioManager:"
-							+ AudioManager.RINGER_MODE_CHANGED_ACTION);
 					mSwipeLayout.getAngleLayout().getAngleView()
 							.refreshToolsView();
 					mSwipeLayout.getAngleLayout().getAngleView()

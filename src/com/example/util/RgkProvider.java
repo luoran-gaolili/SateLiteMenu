@@ -234,7 +234,6 @@ public class RgkProvider extends ContentProvider {
 			intent.addCategory(Intent.CATEGORY_LAUNCHER);
 			ContentValues values = new ContentValues();
 			PackageManager packageManager = mContext.getPackageManager();
-			int i = 0;
 			try {
 
 				// 解析xml文件
@@ -352,6 +351,7 @@ public class RgkProvider extends ContentProvider {
 		public boolean addQuickSwith(SQLiteDatabase database,
 				ContentValues values, TypedArray array,
 				PackageManager packageManager) {
+			// 获得自定义属性
 			String item_action = array
 					.getString(R.styleable.Favorite_item_action);
 
@@ -361,7 +361,6 @@ public class RgkProvider extends ContentProvider {
 			}
 			String item_title = array
 					.getString(R.styleable.Favorite_item_title);
-			Log.d("LUORAN78", "item_title:" + item_title);
 			int item_index = array.getInt(R.styleable.Favorite_item_index, 0);
 			values.put(RgkItemSettings.BaseColumns.ITEM_TITLE, item_title);
 			values.put(RgkItemSettings.BaseColumns.ITEM_INDEX, item_index);
@@ -430,7 +429,7 @@ public class RgkProvider extends ContentProvider {
 	}
 
 	/**
-	 * Sql参数拼接
+	 * Sql参数拼接 table:表名 where:约束条件 args: 参数
 	 */
 	static class SqlArguments {
 

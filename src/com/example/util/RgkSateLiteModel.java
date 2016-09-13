@@ -263,9 +263,10 @@ public class RgkSateLiteModel {
 			PackageManager manager = mContext.getPackageManager();
 			List<ResolveInfo> mInfoLists = manager.queryIntentActivities(
 					mainIntent, 0);
-		/*	Collections.sort(mInfoLists,
-					new RgkSateLiteModel.ShortcutNameComparator(manager,
-							mLabelCache));*/
+			/*
+			 * Collections.sort(mInfoLists, new
+			 * RgkSateLiteModel.ShortcutNameComparator(manager, mLabelCache));
+			 */
 
 			if (mAllAppsList.data.size() > 0) {
 				mAllAppsList.data.clear();
@@ -276,6 +277,7 @@ public class RgkSateLiteModel {
 			}
 
 		}
+
 		/**
 		 * 从表中读出数据传到Service(回调)
 		 */
@@ -302,6 +304,9 @@ public class RgkSateLiteModel {
 								.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_INTENT));
 				int iconType = cursor.getInt(cursor
 						.getColumnIndex(RgkItemSettings.BaseColumns.ICON_TYPE));
+				
+				
+				//获得列标
 				int iconIndex = cursor
 						.getColumnIndex(RgkItemSettings.BaseColumns.ICON_BITMAP);
 				try {
@@ -317,6 +322,7 @@ public class RgkSateLiteModel {
 				switch (iconType) {
 
 				case RgkItemSettings.BaseColumns.ICON_TYPE_BITMAP:
+					// 从数据库中读取图片
 					icon = getIconFromCursor(cursor, iconIndex, mContext);
 					break;
 				default:
