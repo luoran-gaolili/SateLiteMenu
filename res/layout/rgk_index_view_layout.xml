@@ -13,6 +13,7 @@
         android:background="@drawable/swipe_edit_listview_item_bg"
         android:gravity="center"
         android:textColor="@android:color/holo_green_light"
+        android:layout_marginTop="2dp"
         android:visibility="visible"
         android:textSize="20sp" />
 </com.example.view.AppsIndexView>

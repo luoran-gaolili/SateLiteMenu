@@ -20,8 +20,7 @@ import com.example.util.onChangeListener;
 
 public class RgkLayout extends FrameLayout implements
 		RgkView.OnAngleChangeListener, RgkIndicatorView.OnIndexChangedLitener,
-		RgkView.OnEditModeChangeListener, RgkCornerView.OnCornerClickListener,
-		RgkView.OnBindListener {
+		RgkView.OnEditModeChangeListener, RgkCornerView.OnCornerClickListener {
 
 	private Context mContext;
 	/**
@@ -229,8 +228,6 @@ public class RgkLayout extends FrameLayout implements
 
 		mCornerView = (RgkCornerView) findViewById(R.id.corner_view);
 		mCornerView.setOnCornerListener(this);
-
-		mAngleView.setOnBindListener(this);
 
 	}
 
@@ -634,11 +631,6 @@ public class RgkLayout extends FrameLayout implements
 		if (mEditState == STATE_NORMAL) {
 			off();
 		}
-	}
-
-	@Override
-	public void bindComplete() {
-		// 什么也不做
 	}
 
 	/**

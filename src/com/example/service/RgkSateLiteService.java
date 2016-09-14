@@ -115,7 +115,7 @@ public class RgkSateLiteService extends Service implements
 		setCatchView(pre);
 
 		initCacthView(0);
-
+		// 加载RgkParentLayout
 		mSwipeLayout = (RgkParentLayout) LayoutInflater.from(getBaseContext())
 				.inflate(R.layout.rgk_layout, null);
 		/**

@@ -242,16 +242,7 @@ public class RgkView extends PositionStateView {
 
 	}
 
-	public OnBindListener mOnBindListener;
-
-	interface OnBindListener {
-
-		/**
-		 * 数据绑定完成
-		 */
-		void bindComplete();
-	}
-
+	
 	/**
 	 * 临时坐标信息
 	 */
@@ -464,7 +455,6 @@ public class RgkView extends PositionStateView {
 		}
 
 		refresh();
-		mOnBindListener.bindComplete();
 	}
 
 	public boolean contains(
@@ -1120,10 +1110,6 @@ public class RgkView extends PositionStateView {
 
 	public void setOnAngleLongClickListener(OnEditModeChangeListener listener) {
 		mOnEditModeChangeListener = listener;
-	}
-
-	public void setOnBindListener(OnBindListener listener) {
-		mOnBindListener = listener;
 	}
 
 	/**

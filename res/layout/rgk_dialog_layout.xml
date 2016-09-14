@@ -34,13 +34,6 @@
          android:orientation="horizontal">
 
      </LinearLayout>
-   <!-- <GridView
-        android:id="@+id/swipe_edit_content_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:numColumns="4" />-->
-
 
     <LinearLayout
         android:id="@+id/swipe_edit_footer_layout"

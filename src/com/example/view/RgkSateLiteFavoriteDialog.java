@@ -35,7 +35,6 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 		View.OnClickListener {
 
 	private GridLayout mHeaderGridLayout;
-	private GridView rgksGridView;
 
 	private ListView mListView;
 	/**
@@ -189,13 +188,15 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 	public void setHeaderData(ArrayList<RgkItemAppsInfo> appslist) {
 		mHeaderDataList = new ArrayList<>();
 		mFixedDataList = new ArrayList<>();
+
 		mHeaderDataList.addAll(appslist);
+		// 原始数据
 		mFixedDataList.addAll(appslist);
 		refreshHeader();
 	}
 
 	/**
-	 * 刷新ListView Header
+	 * 刷新ListView Header 填充header
 	 */
 	public void refreshHeader() {
 		mHeaderGridLayout.removeAllViews();
@@ -413,6 +414,7 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 		PackageManager packageManager = context.getPackageManager();
 		ContentValues contentValues[] = new ContentValues[newlist.size()];
 		for (int i = 0; i < newlist.size(); i++) {
+			// 组装ContentValue
 			contentValues[i] = newlist.get(i).assembleContentValues(context, i,
 					intent, packageManager);
 		}
@@ -450,6 +452,7 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 			return 0;
 		}
 
+		// 引入AppsIndexView
 		public View getView(int position, View convertView, ViewGroup parent) {
 
 			if (convertView == null) {
@@ -460,12 +463,9 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 					.toString());
 			((AppsIndexView) convertView)
 					.setSwipeEditLayout(RgkSateLiteFavoriteDialog.this);
-			// ((AppsIndexView)
-			// convertView).setMeasure(mKeyItem.get(stringsArray.get(position)).size());
 			((AppsIndexView) convertView).setContent(
 					mDataList.get(mKeys.get(position)), mHeaderDataList);
 
-			// ((AppsIndexView)convertView).setGridBackground(Color.GREEN);
 			return convertView;
 		}
 	}
