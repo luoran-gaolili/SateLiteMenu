@@ -49,7 +49,7 @@ public class AppsIndexView extends LinearLayout {
 		mKey.setText(key);
 	}
 
-	public void setSwipeEditLayout(
+	public void setDialogListener(
 			RgkSateLiteFavoriteDialog swipeEditFavoriteDialog) {
 		mSwipeEditFavoriteDialog = swipeEditFavoriteDialog;
 	}

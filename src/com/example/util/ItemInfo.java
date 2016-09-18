@@ -48,12 +48,6 @@ public class ItemInfo {
         return "";
     }
 
-    void onAddToDatabase(ContentValues values) {
-        values.put(RgkItemSettings.BaseColumns.ITEM_TYPE, mType);
-        values.put(RgkItemSettings.BaseColumns.ITEM_TITLE, mTitle.toString());
-        values.put(RgkItemSettings.BaseColumns.ITEM_INDEX, mIndex);
-    }
-
     /**
      * 把图片保存到sqlite
      *
@@ -71,19 +65,6 @@ public class ItemInfo {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        }
-    }
-
-    /**
-     * bitmap转换成二进制然后放在数据库
-     *
-     * @param values
-     * @param bitmap
-     */
-    static void writeBitmap(ContentValues values, Bitmap bitmap) {
-        if (bitmap != null) {
-            byte[] data = flattenBitmap(bitmap);
-            values.put(RgkItemSettings.BaseColumns.ITEM_ICON, data);
         }
     }
 }

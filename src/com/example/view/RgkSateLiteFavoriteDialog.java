@@ -436,8 +436,9 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 			}
 			((AppsIndexView) convertView).setKeyString(mKeys.get(position)
 					.toString());
+			// 设置回调监听
 			((AppsIndexView) convertView)
-					.setSwipeEditLayout(RgkSateLiteFavoriteDialog.this);
+					.setDialogListener(RgkSateLiteFavoriteDialog.this);
 			((AppsIndexView) convertView).setContent(
 					mDataList.get(mKeys.get(position)), mHeaderDataList);
 

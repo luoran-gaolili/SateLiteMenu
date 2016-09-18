@@ -113,6 +113,7 @@ public class RgkTouchView extends PositionStateView {
 		mDisplayWidth = context.getResources().getDisplayMetrics().widthPixels;
 		mDisplayHeight = context.getResources().getDisplayMetrics().heightPixels;
 		ViewConfiguration configuration = ViewConfiguration.get(context);
+		// 允许滑动的最小距离
 		mTouchSlop = configuration.getScaledTouchSlop();
 		mMaximumVelocity = ViewConfiguration.get(context)
 				.getScaledMaximumFlingVelocity();
@@ -192,14 +193,12 @@ public class RgkTouchView extends PositionStateView {
 			// 这个地方就是判断滑动catchview的速度
 			if (vx > VELOCITY_2500 || vy < -VELOCITY_2500
 					|| vx < -VELOCITY_2500) {
-				Log.d("LUORAN13", "sdlflkdshhkhkl");
 				// 如果滑动的角度不对，则收回catchView
 				mListener.cancel(this, true);
-				//new RgkLayout(getContext()).startAnimation();
+				// new RgkLayout(getContext()).startAnimation();
 			} else {
-				Log.d("LUORAN13", "sdlflkdshhkhk11");
 				mListener.cancel(this, false);
-				//new RgkLayout(getContext()).startAnimation();
+				// new RgkLayout(getContext()).startAnimation();
 			}
 			recyleVelocityTracker();
 			break;

@@ -160,7 +160,6 @@ public class RgkSateLiteService extends Service implements
 						false, mObserver);
 	}
 
-	@Nullable
 	@Override
 	public IBinder onBind(Intent intent) {
 		return mBinder;
@@ -168,7 +167,6 @@ public class RgkSateLiteService extends Service implements
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-
 		// (LUORAN)加载快捷开关和常用应用
 		mLauncherModel.startLoadTask();
 		return super.onStartCommand(intent, flags, startId);
@@ -185,7 +183,6 @@ public class RgkSateLiteService extends Service implements
 
 		unregisterReceiver(mReceiver);
 		getContentResolver().unregisterContentObserver(mObserver);
-		// unregisterReceiver(mWatchRecevier);
 
 	}
 
@@ -458,9 +455,7 @@ public class RgkSateLiteService extends Service implements
 		}
 	}
 
-	/**
-	 * 监听gprs data变化
-	 */
+	// 当数据库内容发生变化时候，更新一下数据
 	class MobileContentObserver extends ContentObserver {
 
 		private Context mContext;

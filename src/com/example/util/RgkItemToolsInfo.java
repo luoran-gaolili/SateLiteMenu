@@ -45,6 +45,7 @@ public class RgkItemToolsInfo extends ItemInfo {
 				assembleContentValues(context, index));
 	}
 
+	// 组装数据
 	public ContentValues assembleContentValues(Context context, int index) {
 		ContentValues values = new ContentValues();
 		values.put(Utilities.BaseColumns.ITEM_TITLE, mTitle.toString());
@@ -55,6 +56,7 @@ public class RgkItemToolsInfo extends ItemInfo {
 		return values;
 	}
 
+	// 插入数据
 	public void bulkInsert(Context context, ContentValues values[]) {
 		ContentResolver resolver = context.getContentResolver();
 		resolver.bulkInsert(Utilities.Favorites.CONTENT_URI, values);
