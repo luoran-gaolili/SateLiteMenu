@@ -2,6 +2,7 @@ package com.example.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -128,6 +129,7 @@ public class RgkCornerView extends FrameLayout {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		Log.d("LUOMANLUO","lkhnadslkfhdfhk");
 		int action = event.getAction();
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:

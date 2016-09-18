@@ -50,8 +50,6 @@ public class RgkSateLiteModel {
 	 */
 	private RgkAppIconCache mIconCache;
 
-	private Callback mCallBack;
-
 	private WeakReference<Callback> mCallback;
 
 	private Bitmap mDefaultIcon;
@@ -249,6 +247,7 @@ public class RgkSateLiteModel {
 			loadAndBindAllApps();
 		}
 
+		// 解析xml文件
 		private void loadDefaultWorkspace() {
 			mApplication.getProvider().loadDefaultFavoritesIfNecessary(
 					R.xml.default_workspace);
@@ -263,10 +262,10 @@ public class RgkSateLiteModel {
 			PackageManager manager = mContext.getPackageManager();
 			List<ResolveInfo> mInfoLists = manager.queryIntentActivities(
 					mainIntent, 0);
-			/*
-			 * Collections.sort(mInfoLists, new
-			 * RgkSateLiteModel.ShortcutNameComparator(manager, mLabelCache));
-			 */
+
+			Collections.sort(mInfoLists,
+					new RgkSateLiteModel.ShortcutNameComparator(manager,
+							mLabelCache));
 
 			if (mAllAppsList.data.size() > 0) {
 				mAllAppsList.data.clear();
@@ -304,9 +303,8 @@ public class RgkSateLiteModel {
 								.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_INTENT));
 				int iconType = cursor.getInt(cursor
 						.getColumnIndex(RgkItemSettings.BaseColumns.ICON_TYPE));
-				
-				
-				//获得列标
+
+				// 获得列标
 				int iconIndex = cursor
 						.getColumnIndex(RgkItemSettings.BaseColumns.ICON_BITMAP);
 				try {
@@ -318,7 +316,6 @@ public class RgkSateLiteModel {
 				application.mType = type;
 				application.mTitle = title;
 				application.mIntent = intent;
-				Log.d("LUORANHHH", "iconType" + iconType);
 				switch (iconType) {
 
 				case RgkItemSettings.BaseColumns.ICON_TYPE_BITMAP:

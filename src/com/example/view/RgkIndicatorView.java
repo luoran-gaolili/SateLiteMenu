@@ -209,8 +209,6 @@ public class RgkIndicatorView extends PositionStateView {
         int action = event.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-
-                Log.d("LUORAN66","MotionEvent.ACTION_DOWN");
                 mLastX = event.getX();
                 mLastY = event.getY();
 
@@ -218,7 +216,6 @@ public class RgkIndicatorView extends PositionStateView {
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
-                Log.d("LUORAN66","MotionEvent.ACTION_DOWN");
                 
                 float newx = event.getX();
                 float newy = event.getY();
@@ -230,12 +227,6 @@ public class RgkIndicatorView extends PositionStateView {
                         degree = Math.toDegrees(Math.atan(newy / (mWidth - newx)));
                     }
                     if (degree > 0 && degree < DEGREES_U * 3) {
-                    	
-                    	
-                    	
-                    	Log.d("LUORAN45","degree"+degree);
-                    	
-                    	
                         mListener.onIndexChanged(0);
                     } else if (degree > DEGREES_U * 3 && degree < DEGREES_U * 5) {
                         mListener.onIndexChanged(1);

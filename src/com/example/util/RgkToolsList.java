@@ -7,25 +7,28 @@ import android.util.Log;
 
 import com.example.satelitemenu.R;
 
-
 public class RgkToolsList {
 
-    public ArrayList<RgkItemToolsInfo> mSwipeDataList;
+	private static final String TAG = "RgkToolsList";
 
-    public String mSwipeActionArrAy[];
+	public ArrayList<RgkItemToolsInfo> mSwipeDataList;
 
-    public String mSwipeTitleArrAy[];
+	public String mSwipeActionArray[];
 
-    public RgkToolsList(Context context) {
-        mSwipeDataList = new ArrayList<>();
-        mSwipeActionArrAy = context.getResources().getStringArray(R.array.rgk_tools_action_array);
-        Log.d("LUORAN85","mSwipeActionArrAy:"+mSwipeActionArrAy.length);
-        mSwipeTitleArrAy = context.getResources().getStringArray(R.array.rgk_tools_title_array);
-        for (int i = 0; i < mSwipeActionArrAy.length; i++) {
-            RgkItemToolsInfo itemswitch = new RgkItemToolsInfo();
-            itemswitch.mTitle = mSwipeTitleArrAy[i];
-            itemswitch.mAction = mSwipeActionArrAy[i];
-            mSwipeDataList.add(itemswitch);
-        }
-    }
+	public String mSwipeTitleArray[];
+
+	public RgkToolsList(Context context) {
+		mSwipeDataList = new ArrayList<>();
+		mSwipeActionArray = context.getResources().getStringArray(
+				R.array.rgk_tools_action_array);
+		mSwipeTitleArray = context.getResources().getStringArray(
+				R.array.rgk_tools_title_array);
+		for (int i = 0; i < mSwipeActionArray.length; i++) {
+			RgkItemToolsInfo itemswitch = new RgkItemToolsInfo();
+			itemswitch.mTitle = mSwipeTitleArray[i];
+			itemswitch.mAction = mSwipeActionArray[i];
+			mSwipeDataList.add(itemswitch);
+		}
+		Log.d(TAG,"RgkToolsList.size():"+mSwipeDataList.size());
+	}
 }

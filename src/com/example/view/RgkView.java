@@ -2,13 +2,10 @@ package com.example.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
@@ -28,7 +25,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
@@ -242,7 +238,6 @@ public class RgkView extends PositionStateView {
 
 	}
 
-	
 	/**
 	 * 临时坐标信息
 	 */
@@ -394,6 +389,7 @@ public class RgkView extends PositionStateView {
 		return null;
 	}
 
+	// 当系统属性发生变化的时候，刷新当前显示的数据
 	public void refreshToolsView() {
 		int index = getViewsIndex();
 		for (int i = 0; i < mMap.get(index).size(); i++) {
@@ -819,7 +815,7 @@ public class RgkView extends PositionStateView {
 
 	@Override
 	public boolean onTouchEvent(final MotionEvent event) {
-
+		Log.d("LUOMANLUO", "dhdhkhkk");
 		int action = event.getAction();
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
@@ -841,6 +837,7 @@ public class RgkView extends PositionStateView {
 
 					if (mMotionX > mDownLeft && mMotionX < mDownRight
 							&& mMotionY > mDownTop && mMotionY < mDownBottom) {
+
 						mClickTime1 = System.currentTimeMillis();
 						/**
 						 * 找到当前点击的那个item
@@ -855,7 +852,7 @@ public class RgkView extends PositionStateView {
 									.getVisibility() == View.GONE) {
 
 								mClickType = TYPE_CLICK;
-								
+
 							} else if (mMotionX > mDownLeft
 									&& mMotionX < (mDownLeft + mDeleteBtnSize)
 									&& mMotionY > mDownTop
@@ -960,6 +957,7 @@ public class RgkView extends PositionStateView {
 			mClickType = -1;
 			break;
 		}
+		Log.d("YIYA", "super.onTouchEvent(event)" + super.onTouchEvent(event));
 		return super.onTouchEvent(event);
 
 	}

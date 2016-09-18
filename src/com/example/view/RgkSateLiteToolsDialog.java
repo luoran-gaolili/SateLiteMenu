@@ -28,6 +28,7 @@ public class RgkSateLiteToolsDialog extends RgkSateLiteDialog implements
 	private ArrayList<RgkItemToolsInfo> mFixedList;
 
 	private ArrayList<RgkItemToolsInfo> mSelectedList;
+	private static final int rgkToolsCount = 9;
 
 	public RgkSateLiteToolsDialog(Context context) {
 		this(context, null);
@@ -91,8 +92,8 @@ public class RgkSateLiteToolsDialog extends RgkSateLiteDialog implements
 	 * @param switches
 	 */
 	public void setGridData(ArrayList<RgkItemToolsInfo> switches) {
-		
-		Log.d("LUORANHA","switches:"+switches.size());
+
+		Log.d("LUORANHA", "switches:" + switches.size());
 		mDatalist = new ArrayList<>();
 		mDatalist.addAll(switches);
 	}
@@ -164,21 +165,24 @@ public class RgkSateLiteToolsDialog extends RgkSateLiteDialog implements
 		mGridLayout.removeAllViews();
 		for (int i = 0; i < mFixedList.size(); i++) {
 			final GridLayoutItemView itemview = (GridLayoutItemView) LayoutInflater
-					.from(getContext()).inflate(
-							R.layout.rgk_grid_item_layout, null);
+					.from(getContext()).inflate(R.layout.rgk_grid_item_layout,
+							null);
 			itemview.setTag(i);
 			RgkToolsBean.getInstance().initView(getContext(), itemview,
 					mFixedList.get(i));
 			itemview.setTitle(mFixedList.get(i).mTitle.toString());
 			itemview.setOnClickListener(this);
-			/*itemview.setItemIconBackground(getResources().getDrawable(
-					R.drawable.angle_item_bg));*/
+			/*
+			 * itemview.setItemIconBackground(getResources().getDrawable(
+			 * R.drawable.angle_item_bg));
+			 */
 			itemview.setChecked(mFixedList.get(i).isChecked);
 			mGridLayout.addView(itemview, new LinearLayout.LayoutParams(mSize,
 					mSize));
 		}
+
 		mDialogTitle.setText(String.format(mTitleFormat,
-				String.valueOf(getNewSelectList().size()), "8"));
+				String.valueOf(getNewSelectList().size()), rgkToolsCount));
 	}
 
 	/**
@@ -214,7 +218,8 @@ public class RgkSateLiteToolsDialog extends RgkSateLiteDialog implements
 		return compare(getContext(), mSelectedList, getNewSelectList());
 	}
 
-	public boolean compare(Context context, ArrayList<RgkItemToolsInfo> oldlist,
+	public boolean compare(Context context,
+			ArrayList<RgkItemToolsInfo> oldlist,
 			ArrayList<RgkItemToolsInfo> newlist) {
 		/**
 		 * 长度相等的时候经一步比较，负责直接更新

@@ -391,7 +391,7 @@ public class RgkLayout extends FrameLayout implements
 			if (mEditState == STATE_NORMAL) {
 				if (mAngleView.isLeft()) {
 
-					Log.d("LUOMAN123", "HAHAHAH");
+					
 					mAngleView.downAngle(mLastMotionX, mHeight - mLastMotionY);
 					return true;
 				} else if (mAngleView.isRight()) {
@@ -400,6 +400,7 @@ public class RgkLayout extends FrameLayout implements
 					return true;
 				}
 			} else if (mEditState == STATE_EDIT) {
+				Log.d("LUOMAN123", "HAHAHAH");
 				return true;
 			}
 
@@ -496,6 +497,8 @@ public class RgkLayout extends FrameLayout implements
 
 			break;
 		case MotionEvent.ACTION_UP:
+			
+			Log.d("CHENCONG","ffkljwefjlfjwefop;o");
 			mTouchState = TOUCH_STATE_REST;
 
 			// 计算滑动的初始速度
