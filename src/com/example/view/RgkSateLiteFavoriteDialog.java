@@ -154,15 +154,6 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 		}
 	}
 
-	/**
-	 * 判定key是否存在于List中
-	 * 
-	 * @param key
-	 *            当前的key
-	 * @param app
-	 *            当前的app
-	 */
-
 	private void contains(String key, RgkItemAppsInfo app) {
 		if (!mKeys.contains(key)) {
 			mKeys.add(key);
@@ -175,9 +166,6 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 		}
 		// 组装数据
 		mDataList.put(key, mApplist);
-		/*
-		 * if (mApplist != null) { mApplist.add(app); }
-		 */
 	}
 
 	/**
@@ -201,7 +189,6 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 	public void refreshHeader() {
 		mHeaderGridLayout.removeAllViews();
 		if (mHeaderDataList != null && mHeaderDataList.size() > 0) {
-			// final
 			for (int i = 0; i < mHeaderDataList.size(); i++) {
 				final GridLayoutItemView itemview = (GridLayoutItemView) LayoutInflater
 						.from(getContext()).inflate(
@@ -215,7 +202,6 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 				itemview.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						// mHeaderGridLayout.removeView(itemview);
 						hideAnimation(v);
 					}
 				});
@@ -297,7 +283,7 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 			GridLayoutItemView itemview = (GridLayoutItemView) v;
 			if (itemview.getCheckBox().isChecked() == true) {
 				// delete
-				int index = findAppInHeader(itemapp);
+				int index = findAppIndexInHeader(itemapp);
 				if (index > -1) {
 					mHeaderDataList.remove(index);
 					refreshHeader();
@@ -325,7 +311,7 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 	 *            当前的传入的item
 	 * @return 返回找到的index，找不到返回－1
 	 */
-	public int findAppInHeader(RgkItemAppsInfo app) {
+	public int findAppIndexInHeader(RgkItemAppsInfo app) {
 		for (int i = 0; i < mHeaderDataList.size(); i++) {
 			if (mHeaderDataList.get(i).mIntent.getComponent().getClassName()
 					.equals(app.mIntent.getComponent().getClassName())
@@ -343,16 +329,7 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 		return compare(getContext(), getOldDataList(), getNewDataList());
 	}
 
-	/**
-	 * 比较两个集合确定是否更新数据
-	 * 
-	 * @param context
-	 * @param newlist
-	 *            新的数据集合
-	 * @param oldlist
-	 *            就的数据集合
-	 * @return
-	 */
+	// 判断两个集合的数据是否已经发生了变化
 	public boolean compare(Context context, ArrayList<RgkItemAppsInfo> oldlist,
 			ArrayList<RgkItemAppsInfo> newlist) {
 		/**
@@ -370,14 +347,12 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 				}
 			}
 			if (bool) {
-				// deleteList(context, oldlist);
 				deletedListAll(context);
 				addList(context, newlist);
 				return true;
 			}
 		} else {
 			// 替换
-			// deleteList(context, oldlist);
 			deletedListAll(context);
 			addList(context, newlist);
 			return true;

@@ -160,8 +160,7 @@ public class RgkSateLiteModel {
 			application.mType = type;
 			application.mTitle = title;
 			application.mIntent = intent;
-
-			/* Log.d("LUORANHHH","iconType"+iconType); */
+			
 			switch (iconType) {
 
 			case RgkItemSettings.BaseColumns.ICON_TYPE_BITMAP:

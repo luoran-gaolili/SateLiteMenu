@@ -121,15 +121,11 @@ public class RgkCornerView extends FrameLayout {
 					R.drawable.close));
 		} else if (mState == STATE_EDIT) {
 			// mIcon.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_arrow_back));
-		} else if (mState == STATE_DRAG) {
-			mIcon.setImageDrawable(getContext().getResources().getDrawable(
-					R.drawable.delete_zone_trash_1));
 		}
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		Log.d("LUOMANLUO","lkhnadslkfhdfhk");
 		int action = event.getAction();
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
@@ -155,18 +151,5 @@ public class RgkCornerView extends FrameLayout {
 			break;
 		}
 		return true;
-	}
-
-	public void setTrashState(float p) {
-		if (p < 0.3f) {
-			mIcon.setImageDrawable(getContext().getResources().getDrawable(
-					R.drawable.delete_zone_trash_1));
-		} else if (p > 0.3f && p < 0.6f) {
-			mIcon.setImageDrawable(getContext().getResources().getDrawable(
-					R.drawable.delete_zone_trash_2));
-		} else if (p > 0.6f) {
-			mIcon.setImageDrawable(getContext().getResources().getDrawable(
-					R.drawable.delete_zone_trash_3));
-		}
 	}
 }

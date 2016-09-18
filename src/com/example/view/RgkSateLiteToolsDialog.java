@@ -93,7 +93,6 @@ public class RgkSateLiteToolsDialog extends RgkSateLiteDialog implements
 	 */
 	public void setGridData(ArrayList<RgkItemToolsInfo> switches) {
 
-		Log.d("LUORANHA", "switches:" + switches.size());
 		mDatalist = new ArrayList<>();
 		mDatalist.addAll(switches);
 	}
@@ -114,7 +113,7 @@ public class RgkSateLiteToolsDialog extends RgkSateLiteDialog implements
 	 */
 	public void refreshGrid() {
 		mGridLayout.removeAllViews();
-
+          
 		ArrayList<RgkItemToolsInfo> select = new ArrayList<>();
 		ArrayList<RgkItemToolsInfo> normal = new ArrayList<>();
 
@@ -172,10 +171,6 @@ public class RgkSateLiteToolsDialog extends RgkSateLiteDialog implements
 					mFixedList.get(i));
 			itemview.setTitle(mFixedList.get(i).mTitle.toString());
 			itemview.setOnClickListener(this);
-			/*
-			 * itemview.setItemIconBackground(getResources().getDrawable(
-			 * R.drawable.angle_item_bg));
-			 */
 			itemview.setChecked(mFixedList.get(i).isChecked);
 			mGridLayout.addView(itemview, new LinearLayout.LayoutParams(mSize,
 					mSize));
@@ -221,9 +216,7 @@ public class RgkSateLiteToolsDialog extends RgkSateLiteDialog implements
 	public boolean compare(Context context,
 			ArrayList<RgkItemToolsInfo> oldlist,
 			ArrayList<RgkItemToolsInfo> newlist) {
-		/**
-		 * 长度相等的时候经一步比较，负责直接更新
-		 */
+		// 判断数据改变前后列表的长度是否发生了变化
 		if (newlist.size() == oldlist.size()) {
 			boolean bool = false;
 			for (int i = 0; i < newlist.size(); i++) {
@@ -232,14 +225,12 @@ public class RgkSateLiteToolsDialog extends RgkSateLiteDialog implements
 				}
 			}
 			if (bool) {
-				// deleteList(context, oldlist);
 				deleteListAll(context);
 				addList(context, newlist);
 				return true;
 			}
 		} else {
 			// 替换
-			// deleteList(context, oldlist);
 			deleteListAll(context);
 			addList(context, newlist);
 			return true;
@@ -247,13 +238,7 @@ public class RgkSateLiteToolsDialog extends RgkSateLiteDialog implements
 		return false;
 	}
 
-	/**
-	 * 删除一个ItemApp List
-	 * 
-	 * @param context
-	 * @param oldlist
-	 *            需要删除的list数据
-	 */
+	// 删除的list数据
 	public void deleteList(Context context, ArrayList<RgkItemToolsInfo> oldlist) {
 		for (int i = 0; i < oldlist.size(); i++) {
 			oldlist.get(i).delete(context);
@@ -264,12 +249,7 @@ public class RgkSateLiteToolsDialog extends RgkSateLiteDialog implements
 		new RgkItemToolsInfo().deletedAll(context);
 	}
 
-	/**
-	 * 新增的ItemList数据
-	 * 
-	 * @param context
-	 * @param newlist
-	 */
+	// 新增的itemlist数据
 	public void addList(Context context, ArrayList<RgkItemToolsInfo> newlist) {
 		ContentValues contentValues[] = new ContentValues[newlist.size()];
 		for (int i = 0; i < newlist.size(); i++) {

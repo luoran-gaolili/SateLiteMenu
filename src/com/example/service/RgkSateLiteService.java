@@ -399,7 +399,6 @@ public class RgkSateLiteService extends Service implements
 
 	@Override
 	public void onAddClick(int index) {
-		Log.d("LUORAN11", "onAddClick");
 		switch (index) {
 		case 2:
 			/**
