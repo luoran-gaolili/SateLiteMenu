@@ -79,7 +79,7 @@ public class RgkSateLiteModel {
 		mAllAppsList = new RgkAppsList(iconCache);
 		mAllToolsList = new RgkToolsList(app);
 		mIconCache = iconCache;
-		mDefaultIcon = Utilities.createIconBitmap(
+		mDefaultIcon = RgkUtilities.createIconBitmap(
 				mIconCache.getFullResDefaultActivityIcon(), app);
 	}
 
@@ -113,7 +113,7 @@ public class RgkSateLiteModel {
 		final boolean debug = false;
 		byte[] data = c.getBlob(iconIndex);
 		try {
-			return Utilities.createIconBitmap(
+			return RgkUtilities.createIconBitmap(
 					BitmapFactory.decodeByteArray(data, 0, data.length),
 					context);
 		} catch (Exception e) {
@@ -130,24 +130,24 @@ public class RgkSateLiteModel {
 	public ArrayList<RgkItemAppsInfo> loadFavorite(Context context) {
 		ContentResolver resolver = context.getContentResolver();
 		Cursor cursor = resolver
-				.query(RgkItemSettings.Favorites.CONTENT_URI,
+				.query(RgkUtilities.Favorites.CONTENT_URI,
 						null,
-						RgkItemSettings.BaseColumns.ITEM_TYPE + "=?",
+						RgkUtilities.BaseColumns.ITEM_TYPE + "=?",
 						new String[] { String
-								.valueOf(RgkItemSettings.BaseColumns.ITEM_TYPE_APPLICATION) },
+								.valueOf(RgkUtilities.BaseColumns.ITEM_TYPE_APPLICATION) },
 						null);
 		ArrayList<RgkItemAppsInfo> favorites = new ArrayList<>();
 		while (cursor.moveToNext()) {
 			int type = cursor.getInt(cursor
-					.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_TYPE));
+					.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TYPE));
 			String title = cursor.getString(cursor
-					.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_TITLE));
+					.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TITLE));
 			String intentStr = cursor.getString(cursor
-					.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_INTENT));
+					.getColumnIndex(RgkUtilities.BaseColumns.ITEM_INTENT));
 			int iconType = cursor.getInt(cursor
-					.getColumnIndex(RgkItemSettings.BaseColumns.ICON_TYPE));
+					.getColumnIndex(RgkUtilities.BaseColumns.ICON_TYPE));
 			int iconIndex = cursor
-					.getColumnIndex(RgkItemSettings.BaseColumns.ICON_BITMAP);
+					.getColumnIndex(RgkUtilities.BaseColumns.ICON_BITMAP);
 			Intent intent = null;
 			Bitmap icon = null;
 			// 对intent进行反序列化
@@ -163,7 +163,7 @@ public class RgkSateLiteModel {
 			
 			switch (iconType) {
 
-			case RgkItemSettings.BaseColumns.ICON_TYPE_BITMAP:
+			case RgkUtilities.BaseColumns.ICON_TYPE_BITMAP:
 				icon = getIconFromCursor(cursor, iconIndex, context);
 				break;
 			default:
@@ -181,23 +181,23 @@ public class RgkSateLiteModel {
 	public ArrayList<RgkItemToolsInfo> loadTools(Context context) {
 		ContentResolver resolver = context.getContentResolver();
 		Cursor cursor = resolver
-				.query(RgkItemSettings.Favorites.CONTENT_URI,
+				.query(RgkUtilities.Favorites.CONTENT_URI,
 						null,
-						RgkItemSettings.BaseColumns.ITEM_TYPE + "=?",
+						RgkUtilities.BaseColumns.ITEM_TYPE + "=?",
 						new String[] { String
-								.valueOf(RgkItemSettings.BaseColumns.ITEM_TYPE_SWITCH) },
+								.valueOf(RgkUtilities.BaseColumns.ITEM_TYPE_SWITCH) },
 						null);
 		ArrayList<RgkItemToolsInfo> switches = new ArrayList<>();
 		while (cursor.moveToNext()) {
 			RgkItemToolsInfo application = new RgkItemToolsInfo();
 			application.mType = cursor.getInt(cursor
-					.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_TYPE));
+					.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TYPE));
 			application.mTitle = cursor.getString(cursor
-					.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_TITLE));
+					.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TITLE));
 			application.mAction = cursor.getString(cursor
-					.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_ACTION));
+					.getColumnIndex(RgkUtilities.BaseColumns.ITEM_ACTION));
 			application.mTitle = cursor.getString(cursor
-					.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_TITLE));
+					.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TITLE));
 			switches.add(application);
 		}
 		cursor.close();
@@ -282,30 +282,30 @@ public class RgkSateLiteModel {
 		public void bindFavorites() {
 			ContentResolver resolver = mContext.getContentResolver();
 			Cursor cursor = resolver
-					.query(RgkItemSettings.Favorites.CONTENT_URI,
+					.query(RgkUtilities.Favorites.CONTENT_URI,
 							null,
-							RgkItemSettings.BaseColumns.ITEM_TYPE + "=?",
+							RgkUtilities.BaseColumns.ITEM_TYPE + "=?",
 							new String[] { String
-									.valueOf(RgkItemSettings.BaseColumns.ITEM_TYPE_APPLICATION) },
+									.valueOf(RgkUtilities.BaseColumns.ITEM_TYPE_APPLICATION) },
 							null);
 			ArrayList<RgkItemAppsInfo> favorites = new ArrayList<>();
 			Intent intent = null;
 			Bitmap icon = null;
 			while (cursor.moveToNext()) {
 				int type = cursor.getInt(cursor
-						.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_TYPE));
+						.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TYPE));
 				String title = cursor
 						.getString(cursor
-								.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_TITLE));
+								.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TITLE));
 				String intentStr = cursor
 						.getString(cursor
-								.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_INTENT));
+								.getColumnIndex(RgkUtilities.BaseColumns.ITEM_INTENT));
 				int iconType = cursor.getInt(cursor
-						.getColumnIndex(RgkItemSettings.BaseColumns.ICON_TYPE));
+						.getColumnIndex(RgkUtilities.BaseColumns.ICON_TYPE));
 
 				// 获得列标
 				int iconIndex = cursor
-						.getColumnIndex(RgkItemSettings.BaseColumns.ICON_BITMAP);
+						.getColumnIndex(RgkUtilities.BaseColumns.ICON_BITMAP);
 				try {
 					intent = Intent.parseUri(intentStr, 0);
 				} catch (URISyntaxException e) {
@@ -317,7 +317,7 @@ public class RgkSateLiteModel {
 				application.mIntent = intent;
 				switch (iconType) {
 
-				case RgkItemSettings.BaseColumns.ICON_TYPE_BITMAP:
+				case RgkUtilities.BaseColumns.ICON_TYPE_BITMAP:
 					// 从数据库中读取图片
 					icon = getIconFromCursor(cursor, iconIndex, mContext);
 					break;
@@ -337,24 +337,24 @@ public class RgkSateLiteModel {
 		private void bindSwitch() {
 			ContentResolver resolver = mContext.getContentResolver();
 			Cursor cursor = resolver
-					.query(RgkItemSettings.Favorites.CONTENT_URI,
+					.query(RgkUtilities.Favorites.CONTENT_URI,
 							null,
-							RgkItemSettings.BaseColumns.ITEM_TYPE + "=?",
+							RgkUtilities.BaseColumns.ITEM_TYPE + "=?",
 							new String[] { String
-									.valueOf(RgkItemSettings.BaseColumns.ITEM_TYPE_SWITCH) },
+									.valueOf(RgkUtilities.BaseColumns.ITEM_TYPE_SWITCH) },
 							null);
 			ArrayList<RgkItemToolsInfo> switches = new ArrayList<>();
 			Log.d("LUORAN78", "cursor.getCount():" + cursor.getCount());
 			while (cursor.moveToNext()) {
 				RgkItemToolsInfo application = new RgkItemToolsInfo();
 				application.mType = cursor.getInt(cursor
-						.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_TYPE));
+						.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TYPE));
 				application.mTitle = cursor
 						.getString(cursor
-								.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_TITLE));
+								.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TITLE));
 				application.mAction = cursor
 						.getString(cursor
-								.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_ACTION));
+								.getColumnIndex(RgkUtilities.BaseColumns.ITEM_ACTION));
 				switches.add(application);
 			}
 			cursor.close();

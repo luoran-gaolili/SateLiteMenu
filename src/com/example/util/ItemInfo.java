@@ -29,13 +29,13 @@ public class ItemInfo {
 
     }
 
-    ItemInfo(ItemInfo info) {
+    ItemInfo(ItemInfo info) { 
         mType = info.mType;
         mTitle = info.mTitle;
         mIndex = info.mIndex;
     }
 
-    static String getPackageName(Intent intent) {
+    private static String getPackageName(Intent intent) {
         if (intent != null) {
             String packageName = intent.getPackage();
             if (packageName == null && intent.getComponent() != null) {
@@ -54,7 +54,7 @@ public class ItemInfo {
      * @param bitmap
      * @return
      */
-    static byte[] flattenBitmap(Bitmap bitmap) {
+    public static byte[] flattenBitmap(Bitmap bitmap) {
         int size = bitmap.getWidth() * bitmap.getHeight() * 4;
         ByteArrayOutputStream out = new ByteArrayOutputStream(size);
         try {

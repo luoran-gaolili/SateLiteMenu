@@ -293,7 +293,7 @@ public class RgkProvider extends ContentProvider {
 			/**
 			 * 判断是否安装
 			 */
-			if (!Utilities.isApkInstalled(mContext, packageName)) {
+			if (!RgkUtilities.isApkInstalled(mContext, packageName)) {
 				hasPackage = false;
 			}
 			if (hasPackage) {
@@ -313,28 +313,28 @@ public class RgkProvider extends ContentProvider {
 							| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 					int item_index = array.getInt(
 							R.styleable.Favorite_item_index, 0);
-					values.put(RgkItemSettings.BaseColumns.ITEM_TITLE,
+					values.put(RgkUtilities.BaseColumns.ITEM_TITLE,
 							item_title);
 					// 序列化intent(序列化原因:让数据变为可传输和可存储状态，一个对象序列化以后就可以在网络上进行传输)
 					Log.d(TAG, "intent:" + intent);
 					Log.d(TAG, "intent:" + intent.toUri(0));
-					values.put(RgkItemSettings.BaseColumns.ITEM_INTENT,
+					values.put(RgkUtilities.BaseColumns.ITEM_INTENT,
 							intent.toUri(0));
-					values.put(RgkItemSettings.BaseColumns.ITEM_INDEX,
+					values.put(RgkUtilities.BaseColumns.ITEM_INDEX,
 							item_index);
-					values.put(RgkItemSettings.BaseColumns.ITEM_TYPE,
-							RgkItemSettings.BaseColumns.ITEM_TYPE_APPLICATION);
-					values.put(RgkItemSettings.BaseColumns.ICON_TYPE,
-							RgkItemSettings.BaseColumns.ICON_TYPE_BITMAP);
+					values.put(RgkUtilities.BaseColumns.ITEM_TYPE,
+							RgkUtilities.BaseColumns.ITEM_TYPE_APPLICATION);
+					values.put(RgkUtilities.BaseColumns.ICON_TYPE,
+							RgkUtilities.BaseColumns.ICON_TYPE_BITMAP);
 					// 把bitmap存入数据库 (数据库里面定义的为BLOB类型，需要存入二进制数据进去)
-					values.put(RgkItemSettings.BaseColumns.ICON_BITMAP,
+					values.put(RgkUtilities.BaseColumns.ICON_BITMAP,
 							flattenBitmap(bd.getBitmap()));
 
 					/**
 					 * 如果表里已经包含了存在的index，就不在插入了
 					 */
 					if (!isIndexExists(database, item_index,
-							RgkItemSettings.BaseColumns.ITEM_TYPE_APPLICATION)) {
+							RgkUtilities.BaseColumns.ITEM_TYPE_APPLICATION)) {
 						checkInsert(database, TAG_FAORITES, values);
 					}
 					// database.close();
@@ -362,14 +362,14 @@ public class RgkProvider extends ContentProvider {
 			String item_title = array
 					.getString(R.styleable.Favorite_item_title);
 			int item_index = array.getInt(R.styleable.Favorite_item_index, 0);
-			values.put(RgkItemSettings.BaseColumns.ITEM_TITLE, item_title);
-			values.put(RgkItemSettings.BaseColumns.ITEM_INDEX, item_index);
-			values.put(RgkItemSettings.BaseColumns.ITEM_TYPE,
-					RgkItemSettings.BaseColumns.ITEM_TYPE_SWITCH);
-			values.put(RgkItemSettings.BaseColumns.ITEM_ACTION, item_action);
+			values.put(RgkUtilities.BaseColumns.ITEM_TITLE, item_title);
+			values.put(RgkUtilities.BaseColumns.ITEM_INDEX, item_index);
+			values.put(RgkUtilities.BaseColumns.ITEM_TYPE,
+					RgkUtilities.BaseColumns.ITEM_TYPE_SWITCH);
+			values.put(RgkUtilities.BaseColumns.ITEM_ACTION, item_action);
 
 			if (!isIndexExists(database, item_index,
-					RgkItemSettings.BaseColumns.ITEM_TYPE_SWITCH)) {
+					RgkUtilities.BaseColumns.ITEM_TYPE_SWITCH)) {
 				checkInsert(database, TAG_FAORITES, values);
 			}
 			// database.close();
@@ -388,7 +388,7 @@ public class RgkProvider extends ContentProvider {
 				if (cursor.getCount() > 0) {
 					while (cursor.moveToNext()) {
 						index.add(cursor.getInt(cursor
-								.getColumnIndex(RgkItemSettings.BaseColumns.ITEM_INDEX)));
+								.getColumnIndex(RgkUtilities.BaseColumns.ITEM_INDEX)));
 					}
 				} else {
 					return false;

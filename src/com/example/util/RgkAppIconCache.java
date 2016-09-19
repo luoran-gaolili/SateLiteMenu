@@ -154,7 +154,7 @@ public class RgkAppIconCache {
 				entry.title = info.activityInfo.name;
 			}
 
-			entry.icon = Utilities.createIconBitmap(getFullResIcon(info),
+			entry.icon = RgkUtilities.createIconBitmap(getFullResIcon(info),
 					mContext);
 		}
 		return entry;

@@ -1,16 +1,7 @@
 package com.example.util;
 
-import android.app.ActivityManager;
 import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class RgkAppsList {
 
@@ -18,12 +9,6 @@ public class RgkAppsList {
 
 	public ArrayList<RgkItemAppsInfo> data = new ArrayList<>(
 			DEFAULT_APPLICATIONS_NUMBER);
-
-	public ArrayList<RgkItemAppsInfo> added = new ArrayList<>(
-			DEFAULT_APPLICATIONS_NUMBER);
-	public ArrayList<RgkItemAppsInfo> removed = new ArrayList<>();
-	public ArrayList<RgkItemAppsInfo> modified = new ArrayList<>();
-	public ArrayList<RgkItemAppsInfo> homeapps = new ArrayList<>();
 
 	private RgkAppIconCache mIconCache;
 
@@ -36,15 +21,6 @@ public class RgkAppsList {
 			return;
 		}
 		data.add(info);
-		added.add(info);
-	}
-
-	public void clear() {
-		data.clear();
-		// TODO: do we clear these too?
-		added.clear();
-		removed.clear();
-		modified.clear();
 	}
 
 	public int size() {

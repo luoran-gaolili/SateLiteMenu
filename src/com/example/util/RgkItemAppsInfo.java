@@ -30,10 +30,6 @@ public class RgkItemAppsInfo extends ItemInfo {
 	 */
 	public ComponentName mComponentName;
 
-	public boolean isFallbackIcon;
-
-	public boolean isCustomIcon;
-
 	int flags = 0;
 
 	static final int DOWNLOADED_FLAG = 1;
@@ -41,7 +37,7 @@ public class RgkItemAppsInfo extends ItemInfo {
 	static final int UPDATED_SYSTEM_APP_FLAG = 2;
 
 	public RgkItemAppsInfo() {
-		mType = RgkItemSettings.BaseColumns.ITEM_TYPE_APPLICATION;
+		mType = RgkUtilities.BaseColumns.ITEM_TYPE_APPLICATION;
 	}
 
 	public RgkItemAppsInfo(RgkItemAppsInfo appinfo) {
@@ -60,41 +56,31 @@ public class RgkItemAppsInfo extends ItemInfo {
 		iconcache.getTitleAndIcon(this, info, lable);
 	}
 
-	void setActivity(ComponentName clazzName, int flag) {
+	private void setActivity(ComponentName clazzName, int flag) {
 		mIntent = new Intent(Intent.ACTION_MAIN);
 		mIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		mIntent.setComponent(clazzName);
 		mIntent.setFlags(flag);
-		mType = RgkItemSettings.BaseColumns.ITEM_TYPE_APPLICATION;
+		mType = RgkUtilities.BaseColumns.ITEM_TYPE_APPLICATION;
 	}
 
 	public int delete(Context context) {
 		ContentResolver resolver = context.getContentResolver();
-		return resolver.delete(RgkItemSettings.Favorites.CONTENT_URI,
-				RgkItemSettings.BaseColumns.ITEM_INTENT + "=?",
+		return resolver.delete(RgkUtilities.Favorites.CONTENT_URI,
+				RgkUtilities.BaseColumns.ITEM_INTENT + "=?",
 				new String[] { mIntent.toUri(0) });
 	}
 
 	public int deleteAll(Context context) {
 		ContentResolver resolver = context.getContentResolver();
 		return resolver
-				.delete(RgkItemSettings.Favorites.CONTENT_URI,
-						RgkItemSettings.BaseColumns.ITEM_TYPE + "=?",
+				.delete(RgkUtilities.Favorites.CONTENT_URI,
+						RgkUtilities.BaseColumns.ITEM_TYPE + "=?",
 						new String[] { String
-								.valueOf(RgkItemSettings.BaseColumns.ITEM_TYPE_APPLICATION) });
+								.valueOf(RgkUtilities.BaseColumns.ITEM_TYPE_APPLICATION) });
 	}
 
-	/**
-	 * 组装ContentValues
-	 * 
-	 * @param context
-	 * @param index
-	 *            索引index，在表中表示Item的顺序
-	 * @param intent
-	 *            App Intent
-	 * @param packageManager
-	 * @return
-	 */
+	// 组装contentvalues
 	public ContentValues assembleContentValues(Context context, int index,
 			Intent intent, PackageManager packageManager) {
 		intent.setComponent(mIntent.getComponent());
@@ -106,15 +92,14 @@ public class RgkItemAppsInfo extends ItemInfo {
 			Drawable drawable = appinfo.loadIcon(packageManager);
 			BitmapDrawable bd = (BitmapDrawable) drawable;
 			ContentValues values = new ContentValues();
-			values.put(RgkItemSettings.BaseColumns.ITEM_TITLE,
-					mTitle.toString());
-			values.put(RgkItemSettings.BaseColumns.ITEM_INTENT, intent.toUri(0));
-			values.put(RgkItemSettings.BaseColumns.ITEM_INDEX, index);
-			values.put(RgkItemSettings.BaseColumns.ITEM_TYPE,
-					RgkItemSettings.BaseColumns.ITEM_TYPE_APPLICATION);
-			values.put(RgkItemSettings.BaseColumns.ICON_TYPE,
-					RgkItemSettings.BaseColumns.ICON_TYPE_BITMAP);
-			values.put(RgkItemSettings.BaseColumns.ICON_BITMAP,
+			values.put(RgkUtilities.BaseColumns.ITEM_TITLE, mTitle.toString());
+			values.put(RgkUtilities.BaseColumns.ITEM_INTENT, intent.toUri(0));
+			values.put(RgkUtilities.BaseColumns.ITEM_INDEX, index);
+			values.put(RgkUtilities.BaseColumns.ITEM_TYPE,
+					RgkUtilities.BaseColumns.ITEM_TYPE_APPLICATION);
+			values.put(RgkUtilities.BaseColumns.ICON_TYPE,
+					RgkUtilities.BaseColumns.ICON_TYPE_BITMAP);
+			values.put(RgkUtilities.BaseColumns.ICON_BITMAP,
 					flattenBitmap(bd.getBitmap()));
 			return values;
 		} catch (PackageManager.NameNotFoundException e) {
@@ -123,9 +108,9 @@ public class RgkItemAppsInfo extends ItemInfo {
 		return null;
 	}
 
-	public void bulkInsert(Context context, ContentValues values[]) {
+	public void rgkInsert(Context context, ContentValues values[]) {
 		ContentResolver resolver = context.getContentResolver();
-		resolver.bulkInsert(RgkItemSettings.Favorites.CONTENT_URI, values);
+		resolver.bulkInsert(RgkUtilities.Favorites.CONTENT_URI, values);
 	}
 
 }

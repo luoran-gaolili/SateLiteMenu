@@ -38,7 +38,7 @@ public class RgkToolsBean {
 		}
 		return mInstance;
 	}
-
+   
 	// 初始化快捷方式的icon
 	public void initView(Context context, RgkItemLayout itemview,
 			RgkItemToolsInfo item) {
@@ -117,8 +117,6 @@ public class RgkToolsBean {
 			context.startActivity(intent);
 			mSwipeLayout.dismissAnimator();
 		} else if (item.mAction.equals(context.getString(R.string.rgk_mute))) {
-
-			Log.d("LUORANMAN", "item.mAction" + item.mAction);
 			RgkAudio.getInstance(context).changeState();
 			itemview.setItemIcon(RgkAudio.getInstance(context)
 					.getDrawableState(context).getBitmap());

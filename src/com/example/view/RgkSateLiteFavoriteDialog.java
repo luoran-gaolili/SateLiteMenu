@@ -393,7 +393,7 @@ public class RgkSateLiteFavoriteDialog extends RgkSateLiteDialog implements
 			contentValues[i] = newlist.get(i).assembleContentValues(context, i,
 					intent, packageManager);
 		}
-		new RgkItemAppsInfo().bulkInsert(context, contentValues);
+		new RgkItemAppsInfo().rgkInsert(context, contentValues);
 	}
 
 	/**

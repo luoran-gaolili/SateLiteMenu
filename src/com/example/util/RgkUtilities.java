@@ -24,7 +24,7 @@ import android.util.DisplayMetrics;
 
 import com.example.satelitemenu.R;
 
-public class Utilities {
+public class RgkUtilities {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "Launcher.Utilities";
@@ -88,16 +88,12 @@ public class Utilities {
 		int sourceWidth = icon.getWidth();
 		int sourceHeight = icon.getHeight();
 		if (sourceWidth > textureWidth && sourceHeight > textureHeight) {
-			// Icon is bigger than it should be; clip it (solves the GB->ICS
-			// migration case)
 			return Bitmap.createBitmap(icon, (sourceWidth - textureWidth) / 2,
 					(sourceHeight - textureHeight) / 2, textureWidth,
 					textureHeight);
 		} else if (sourceWidth == textureWidth && sourceHeight == textureHeight) {
-			// Icon is the right size, no need to change it
 			return icon;
 		} else {
-			// Icon is too small, render to a larger bitmap
 			final Resources resources = context.getResources();
 			return createIconBitmap(new BitmapDrawable(resources, icon),
 					context);
@@ -105,7 +101,7 @@ public class Utilities {
 	}
 
 	public static Bitmap createIconBitmap(Drawable icon, Context context) {
-		synchronized (sCanvas) { // we share the statics :-(
+		synchronized (sCanvas) { 
 			if (sIconWidth == -1) {
 				initStatics(context);
 			}
@@ -129,9 +125,7 @@ public class Utilities {
 			int sourceWidth = icon.getIntrinsicWidth();
 			int sourceHeight = icon.getIntrinsicHeight();
 			if (sourceWidth > 0 && sourceHeight > 0) {
-				// There are intrinsic sizes.
 				if (width < sourceWidth || height < sourceHeight) {
-					// It's too big, scale it down.
 					final float ratio = (float) sourceWidth / sourceHeight;
 					if (sourceWidth > sourceHeight) {
 						height = (int) (width / ratio);
@@ -139,13 +133,11 @@ public class Utilities {
 						width = (int) (height * ratio);
 					}
 				} else if (sourceWidth < width && sourceHeight < height) {
-					// Don't scale up the icon
 					width = sourceWidth;
 					height = sourceHeight;
 				}
 			}
 
-			// no intrinsic size --> use default size
 			int textureWidth = sIconTextureWidth;
 			int textureHeight = sIconTextureHeight;
 
@@ -158,10 +150,8 @@ public class Utilities {
 			final int top = (textureHeight - height) / 2;
 
 			@SuppressWarnings("all")
-			// suppress dead code warning
 			final boolean debug = false;
 			if (debug) {
-				// draw a big box for the icon for debugging
 				canvas.drawColor(sColors[sColorIndex]);
 				if (++sColorIndex >= sColors.length)
 					sColorIndex = 0;
