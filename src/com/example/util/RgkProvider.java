@@ -313,15 +313,13 @@ public class RgkProvider extends ContentProvider {
 							| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 					int item_index = array.getInt(
 							R.styleable.Favorite_item_index, 0);
-					values.put(RgkUtilities.BaseColumns.ITEM_TITLE,
-							item_title);
+					values.put(RgkUtilities.BaseColumns.ITEM_TITLE, item_title);
 					// 序列化intent(序列化原因:让数据变为可传输和可存储状态，一个对象序列化以后就可以在网络上进行传输)
 					Log.d(TAG, "intent:" + intent);
 					Log.d(TAG, "intent:" + intent.toUri(0));
 					values.put(RgkUtilities.BaseColumns.ITEM_INTENT,
 							intent.toUri(0));
-					values.put(RgkUtilities.BaseColumns.ITEM_INDEX,
-							item_index);
+					values.put(RgkUtilities.BaseColumns.ITEM_INDEX, item_index);
 					values.put(RgkUtilities.BaseColumns.ITEM_TYPE,
 							RgkUtilities.BaseColumns.ITEM_TYPE_APPLICATION);
 					values.put(RgkUtilities.BaseColumns.ICON_TYPE,
@@ -354,8 +352,6 @@ public class RgkProvider extends ContentProvider {
 			// 获得自定义属性
 			String item_action = array
 					.getString(R.styleable.Favorite_item_action);
-
-			Log.d("LUORAN78", "item_title");
 			if (item_action == null) {
 				return false;
 			}

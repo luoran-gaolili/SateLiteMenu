@@ -353,7 +353,7 @@ public class RgkView extends PositionStateView {
 					.inflate(R.layout.angle_item_startup, null);
 			itemview.setTitle(appitem.mTitle.toString());
 
-			// 加载tools的icon 
+			// 加载tools的icon
 			RgkToolsBean.getInstance()
 					.initView(getContext(), itemview, appitem);
 
@@ -502,7 +502,7 @@ public class RgkView extends PositionStateView {
 	}
 
 	/**
-	 * view left
+	 * view left mBaseAngle 90 180 270....990
 	 * 
 	 * @param index
 	 */
@@ -1118,7 +1118,7 @@ public class RgkView extends PositionStateView {
 	}
 
 	/**
-	 * 手指滑动时 动态的计算一个变化量diff，在根据条件合理的计算
+	 * 手指滑动时 动态的计算一个变化量diff，在根据条件合理的计算 (滑动的时候不断地调用这个方法)
 	 * 
 	 * @param x
 	 * @param y
@@ -1126,13 +1126,16 @@ public class RgkView extends PositionStateView {
 	public void changeAngle(float x, float y) {
 		double diffAngle;
 		double angle;
+		// 计算当前的角度
 		angle = Math.toDegrees(Math.atan(x / y));
 		// 计算角度的变化量
 		diffAngle = angle - mDownAngle;
 
 		if (diffAngle > 0) {
+			// 顺时针
 			ANGLE_STATE = ANGLE_STATE_ALONG;
 		} else {
+			// 逆时针
 			ANGLE_STATE = ANGLE_STATE_INVERSE;
 		}
 		if (isLeft()) {
@@ -1144,7 +1147,7 @@ public class RgkView extends PositionStateView {
 	}
 
 	/**
-	 * 改变mChangeAngle的值
+	 * 改变mChangeAngle的值 mChangeAngle 角度的变化量
 	 * 
 	 * @param rotation
 	 */
@@ -1154,13 +1157,7 @@ public class RgkView extends PositionStateView {
 	}
 
 	private void angleChange() {
-		/**
-		 * 转动的时候回传当前限象index
-		 * 
-		 * cur
-		 * 
-		 * p
-		 */
+		// 转动的时候回传当前限象index
 		mAngleListener.onAngleChanged(
 				getViewsIndex((int) (getAngleValues() / DEGREES_90)),
 				((getAngleValues() % DEGREES_90) / DEGREES_90));
