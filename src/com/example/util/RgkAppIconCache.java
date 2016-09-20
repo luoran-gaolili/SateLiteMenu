@@ -11,12 +11,13 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 public class RgkAppIconCache {
-
-	private static final int INITIAL_ICON_CACHE_CAPACITY = 50;
 
 	private static class CacheEntry {
 		public Bitmap icon;
@@ -25,8 +26,7 @@ public class RgkAppIconCache {
 
 	private final RgkApplication mContext;
 	private final PackageManager mPackageManager;
-	private final HashMap<ComponentName, CacheEntry> mCache = new HashMap<ComponentName, CacheEntry>(
-			INITIAL_ICON_CACHE_CAPACITY);
+	private final HashMap<ComponentName, CacheEntry> mCache = new HashMap<ComponentName, CacheEntry>();
 	private int mIconDpi;
 
 	public RgkAppIconCache(RgkApplication context) {
@@ -86,11 +86,25 @@ public class RgkAppIconCache {
 			if (entry.title == null) {
 				entry.title = info.activityInfo.name;
 			}
-
-			entry.icon = RgkUtilities.createIconBitmap(getFullResIcon(info),
-					mContext);
+			entry.icon = getBitmap(getFullResIcon(info));
+			/*
+			 * entry.icon = RgkUtilities.createIconBitmap(getFullResIcon(info),
+			 * mContext);
+			 */
 		}
 		return entry;
+	}
+
+	private Bitmap getBitmap(Drawable drawable) {
+		int width = drawable.getIntrinsicWidth();
+		int height = drawable.getIntrinsicHeight();
+		Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+				: Bitmap.Config.RGB_565;
+		Bitmap bitmap = Bitmap.createBitmap(width, height, config);
+		Canvas canvas = new Canvas(bitmap);
+		drawable.setBounds(0, 0, width, height);
+		drawable.draw(canvas);
+		return bitmap;
 	}
 
 	public Drawable getFullResIcon(ResolveInfo info) {

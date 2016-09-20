@@ -44,7 +44,7 @@ public class RgkProvider extends ContentProvider {
 
 	static final String PARAMETER_NOTIFY = "notify";
 
-	static final String AUTHORITY = "com.rgk.satelist.provider";
+	static final String AUTHORITY = "com.rgk.satelite.provider";
 
 	private static UriMatcher mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -55,7 +55,7 @@ public class RgkProvider extends ContentProvider {
 	public static final String TAG = "RgkProvider";
 
 	static {
-		mUriMatcher.addURI("com.rgk.satelist.provider", "favorites", 1);
+		mUriMatcher.addURI("com.rgk.satelite.provider", "favorites", 1);
 
 	}
 
@@ -182,7 +182,6 @@ public class RgkProvider extends ContentProvider {
 		SharedPreferences preferences = getContext().getSharedPreferences(
 				PREFERENCE_NAME, Context.MODE_PRIVATE);
 		if (!preferences.getBoolean(PREFERENCE_KEY, false)) {
-			Log.d("LUORAN89", "loadDefaultFavoritesIfNecessary");
 			mDatabaseHelper.loadFavorites(
 					mDatabaseHelper.getWritableDatabase(), resId);
 			SharedPreferences.Editor editor = preferences.edit();
@@ -249,21 +248,17 @@ public class RgkProvider extends ContentProvider {
 						.getDepth() > depth)
 						&& type != XmlPullParser.END_DOCUMENT) {
 					if (type != XmlPullParser.START_TAG) {
-
 						continue;
 					}
-
 					TypedArray array = mContext.obtainStyledAttributes(
 							attributeSet, R.styleable.Favorite);
 
 					values.clear();
 					String tag = parser.getName();
 					if (tag.equals(TAG_FAORITE)) {
-						Log.d("LUORAN89", "addFavorite");
 						addFavorite(db, values, array, packageManager, intent);
 					} else if (tag.equals(TAG_QUICKSWITCH)) {
 						addQuickSwith(db, values, array, packageManager);
-						Log.d("LUORAN89", "addQuickSwith");
 					}
 					array.recycle();
 				}
