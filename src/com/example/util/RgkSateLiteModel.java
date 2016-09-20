@@ -76,11 +76,13 @@ public class RgkSateLiteModel {
 
 	public RgkSateLiteModel(RgkApplication app, RgkAppIconCache iconCache) {
 		mApplication = app;
-		mAllAppsList = new RgkAppsList(iconCache);
+		mAllAppsList = new RgkAppsList();
 		mAllToolsList = new RgkToolsList(app);
 		mIconCache = iconCache;
-		mDefaultIcon = RgkUtilities.createIconBitmap(
-				mIconCache.getFullResDefaultActivityIcon(), app);
+		/*
+		 * mDefaultIcon = RgkUtilities.createIconBitmap(
+		 * mIconCache.getFullResDefaultActivityIcon(), app);
+		 */
 	}
 
 	public void initCallBack(Callback callback) {
@@ -113,9 +115,8 @@ public class RgkSateLiteModel {
 		final boolean debug = false;
 		byte[] data = c.getBlob(iconIndex);
 		try {
-			return RgkUtilities.createIconBitmap(
-					BitmapFactory.decodeByteArray(data, 0, data.length),
-					context);
+			return BitmapFactory.decodeByteArray(data, 0, data.length);
+
 		} catch (Exception e) {
 			return null;
 		}
@@ -160,7 +161,7 @@ public class RgkSateLiteModel {
 			application.mType = type;
 			application.mTitle = title;
 			application.mIntent = intent;
-			
+
 			switch (iconType) {
 
 			case RgkUtilities.BaseColumns.ICON_TYPE_BITMAP:
@@ -180,13 +181,11 @@ public class RgkSateLiteModel {
 	// 点击加号弹出对话框内容
 	public ArrayList<RgkItemToolsInfo> loadTools(Context context) {
 		ContentResolver resolver = context.getContentResolver();
-		Cursor cursor = resolver
-				.query(RgkUtilities.Favorites.CONTENT_URI,
-						null,
-						RgkUtilities.BaseColumns.ITEM_TYPE + "=?",
-						new String[] { String
-								.valueOf(RgkUtilities.BaseColumns.ITEM_TYPE_SWITCH) },
-						null);
+		Cursor cursor = resolver.query(RgkUtilities.Favorites.CONTENT_URI,
+				null, RgkUtilities.BaseColumns.ITEM_TYPE + "=?",
+				new String[] { String
+						.valueOf(RgkUtilities.BaseColumns.ITEM_TYPE_SWITCH) },
+				null);
 		ArrayList<RgkItemToolsInfo> switches = new ArrayList<>();
 		while (cursor.moveToNext()) {
 			RgkItemToolsInfo application = new RgkItemToolsInfo();
@@ -243,7 +242,7 @@ public class RgkSateLiteModel {
 			bindFavorites();
 			bindSwitch();
 			bindFinish();
-			loadAndBindAllApps();
+			bindAllApps();
 		}
 
 		// 解析xml文件
@@ -255,23 +254,19 @@ public class RgkSateLiteModel {
 		/**
 		 * 加载设备上的app数据
 		 */
-		private void loadAndBindAllApps() {
+		private void bindAllApps() {
 			Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 			mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 			PackageManager manager = mContext.getPackageManager();
 			List<ResolveInfo> mInfoLists = manager.queryIntentActivities(
 					mainIntent, 0);
-
-			Collections.sort(mInfoLists,
-					new RgkSateLiteModel.ShortcutNameComparator(manager,
-							mLabelCache));
-
 			if (mAllAppsList.data.size() > 0) {
 				mAllAppsList.data.clear();
 			}
 			for (int i = 0; i < mInfoLists.size(); i++) {
-				mAllAppsList.data.add(new RgkItemAppsInfo(manager, mInfoLists
-						.get(i), mIconCache, mLabelCache));
+				mAllAppsList.data.add(new RgkItemAppsInfo(mContext
+						.getResources(), manager, mInfoLists.get(i),
+						mIconCache, mLabelCache));
 			}
 
 		}
@@ -294,12 +289,10 @@ public class RgkSateLiteModel {
 			while (cursor.moveToNext()) {
 				int type = cursor.getInt(cursor
 						.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TYPE));
-				String title = cursor
-						.getString(cursor
-								.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TITLE));
-				String intentStr = cursor
-						.getString(cursor
-								.getColumnIndex(RgkUtilities.BaseColumns.ITEM_INTENT));
+				String title = cursor.getString(cursor
+						.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TITLE));
+				String intentStr = cursor.getString(cursor
+						.getColumnIndex(RgkUtilities.BaseColumns.ITEM_INTENT));
 				int iconType = cursor.getInt(cursor
 						.getColumnIndex(RgkUtilities.BaseColumns.ICON_TYPE));
 
@@ -349,12 +342,10 @@ public class RgkSateLiteModel {
 				RgkItemToolsInfo application = new RgkItemToolsInfo();
 				application.mType = cursor.getInt(cursor
 						.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TYPE));
-				application.mTitle = cursor
-						.getString(cursor
-								.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TITLE));
-				application.mAction = cursor
-						.getString(cursor
-								.getColumnIndex(RgkUtilities.BaseColumns.ITEM_ACTION));
+				application.mTitle = cursor.getString(cursor
+						.getColumnIndex(RgkUtilities.BaseColumns.ITEM_TITLE));
+				application.mAction = cursor.getString(cursor
+						.getColumnIndex(RgkUtilities.BaseColumns.ITEM_ACTION));
 				switches.add(application);
 			}
 			cursor.close();
@@ -365,50 +356,6 @@ public class RgkSateLiteModel {
 			mCallback.get().bindFinish();
 		}
 
-	}
-
-	// 这是一个比较器
-	public static class ShortcutNameComparator implements
-			Comparator<ResolveInfo> {
-		private Collator mCollator;
-		private PackageManager mPackageManager;
-		private HashMap<Object, CharSequence> mLabelCache;
-
-		ShortcutNameComparator(PackageManager pm) {
-			mPackageManager = pm;
-			mLabelCache = new HashMap<Object, CharSequence>();
-			mCollator = Collator.getInstance();
-		}
-
-		ShortcutNameComparator(PackageManager pm,
-				HashMap<Object, CharSequence> labelCache) {
-			mPackageManager = pm;
-			mLabelCache = labelCache;
-			mCollator = Collator.getInstance();
-		}
-
-		public final int compare(ResolveInfo a, ResolveInfo b) {
-			CharSequence labelA, labelB;
-			ComponentName keyA = RgkSateLiteModel
-					.getComponentNameFromResolveInfo(a);
-			ComponentName keyB = RgkSateLiteModel
-					.getComponentNameFromResolveInfo(b);
-			if (mLabelCache.containsKey(keyA)) {
-				labelA = mLabelCache.get(keyA);
-			} else {
-				labelA = a.loadLabel(mPackageManager).toString();
-
-				mLabelCache.put(keyA, labelA);
-			}
-			if (mLabelCache.containsKey(keyB)) {
-				labelB = mLabelCache.get(keyB);
-			} else {
-				labelB = b.loadLabel(mPackageManager).toString();
-
-				mLabelCache.put(keyB, labelB);
-			}
-			return mCollator.compare(labelA, labelB);
-		}
 	}
 
 }

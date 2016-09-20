@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
@@ -47,12 +49,19 @@ public class RgkItemAppsInfo extends ItemInfo {
 		mComponentName = appinfo.mComponentName;
 	}
 
-	public RgkItemAppsInfo(PackageManager manager, ResolveInfo info,
-			RgkAppIconCache iconcache, HashMap<Object, CharSequence> lable) {
+	public RgkItemAppsInfo(Resources resources, PackageManager manager,
+			ResolveInfo info, RgkAppIconCache iconcache,
+			HashMap<Object, CharSequence> lable) {
 		String packageName = info.activityInfo.applicationInfo.packageName;
 		mComponentName = new ComponentName(packageName, info.activityInfo.name);
 		setActivity(mComponentName, Intent.FLAG_ACTIVITY_NEW_TASK
 				| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+
+		/*this.mTitle = info.activityInfo.name;
+
+		Bitmap bitmap = BitmapFactory.decodeResource(resources,
+				info.activityInfo.icon);
+		this.mIconBitmap = bitmap;*/
 		iconcache.getTitleAndIcon(this, info, lable);
 	}
 

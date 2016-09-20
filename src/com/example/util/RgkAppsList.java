@@ -5,15 +5,9 @@ import java.util.ArrayList;
 
 public class RgkAppsList {
 
-	public static final int DEFAULT_APPLICATIONS_NUMBER = 42;
+	public ArrayList<RgkItemAppsInfo> data = new ArrayList<RgkItemAppsInfo>();
 
-	public ArrayList<RgkItemAppsInfo> data = new ArrayList<>(
-			DEFAULT_APPLICATIONS_NUMBER);
-
-	private RgkAppIconCache mIconCache;
-
-	public RgkAppsList(RgkAppIconCache iconCache) {
-		mIconCache = iconCache;
+	public RgkAppsList() {
 	}
 
 	public void add(RgkItemAppsInfo info) {
@@ -21,14 +15,6 @@ public class RgkAppsList {
 			return;
 		}
 		data.add(info);
-	}
-
-	public int size() {
-		return data.size();
-	}
-
-	public RgkItemAppsInfo get(int index) {
-		return data.get(index);
 	}
 
 	private static boolean findActivity(ArrayList<RgkItemAppsInfo> apps,

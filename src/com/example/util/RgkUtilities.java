@@ -65,11 +65,7 @@ public class RgkUtilities {
 
 		public static final String ICON_PACKAGENAME = "icon_package";
 
-		public static final String ICON_RESOURCE = "icon_resource";
-
 		public static final String ICON_BITMAP = "icon_bitmap";
-
-		public static final int ICON_TYPE_RESOURCE = 0;
 
 		public static final int ICON_TYPE_BITMAP = 1;
 
@@ -82,26 +78,8 @@ public class RgkUtilities {
 	static int sColors[] = { 0xffff0000, 0xff00ff00, 0xff0000ff };
 	static int sColorIndex = 0;
 
-	public static Bitmap createIconBitmap(Bitmap icon, Context context) {
-		int textureWidth = sIconTextureWidth;
-		int textureHeight = sIconTextureHeight;
-		int sourceWidth = icon.getWidth();
-		int sourceHeight = icon.getHeight();
-		if (sourceWidth > textureWidth && sourceHeight > textureHeight) {
-			return Bitmap.createBitmap(icon, (sourceWidth - textureWidth) / 2,
-					(sourceHeight - textureHeight) / 2, textureWidth,
-					textureHeight);
-		} else if (sourceWidth == textureWidth && sourceHeight == textureHeight) {
-			return icon;
-		} else {
-			final Resources resources = context.getResources();
-			return createIconBitmap(new BitmapDrawable(resources, icon),
-					context);
-		}
-	}
-
 	public static Bitmap createIconBitmap(Drawable icon, Context context) {
-		synchronized (sCanvas) { 
+		synchronized (sCanvas) {
 			if (sIconWidth == -1) {
 				initStatics(context);
 			}

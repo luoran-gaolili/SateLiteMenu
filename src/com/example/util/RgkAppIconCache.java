@@ -23,7 +23,6 @@ public class RgkAppIconCache {
 		public String title;
 	}
 
-	private final Bitmap mDefaultIcon;
 	private final RgkApplication mContext;
 	private final PackageManager mPackageManager;
 	private final HashMap<ComponentName, CacheEntry> mCache = new HashMap<ComponentName, CacheEntry>(
@@ -37,8 +36,6 @@ public class RgkAppIconCache {
 		mContext = context;
 		mPackageManager = context.getPackageManager();
 		mIconDpi = activityManager.getLauncherLargeIconDensity();
-
-		mDefaultIcon = makeDefaultIcon();
 	}
 
 	public Drawable getFullResDefaultActivityIcon() {
@@ -57,66 +54,6 @@ public class RgkAppIconCache {
 		return (d != null) ? d : getFullResDefaultActivityIcon();
 	}
 
-	public Drawable getFullResIcon(String packageName, int iconId) {
-		Resources resources;
-		try {
-			resources = mPackageManager.getResourcesForApplication(packageName);
-		} catch (PackageManager.NameNotFoundException e) {
-			resources = null;
-		}
-		if (resources != null) {
-			if (iconId != 0) {
-				return getFullResIcon(resources, iconId);
-			}
-		}
-		return getFullResDefaultActivityIcon();
-	}
-
-	public Drawable getFullResIcon(ResolveInfo info) {
-		return getFullResIcon(info.activityInfo);
-	}
-
-	public Drawable getFullResIcon(ActivityInfo info) {
-
-		Resources resources;
-		try {
-			resources = mPackageManager
-					.getResourcesForApplication(info.applicationInfo);
-		} catch (PackageManager.NameNotFoundException e) {
-			resources = null;
-		}
-		if (resources != null) {
-			int iconId = info.getIconResource();
-			if (iconId != 0) {
-				return getFullResIcon(resources, iconId);
-			}
-		}
-		return getFullResDefaultActivityIcon();
-	}
-
-	private Bitmap makeDefaultIcon() {
-		Drawable d = getFullResDefaultActivityIcon();
-		Bitmap b = Bitmap.createBitmap(Math.max(d.getIntrinsicWidth(), 1),
-				Math.max(d.getIntrinsicHeight(), 1), Bitmap.Config.ARGB_8888);
-		Canvas c = new Canvas(b);
-		d.setBounds(0, 0, b.getWidth(), b.getHeight());
-		d.draw(c);
-		c.setBitmap(null);
-		return b;
-	}
-
-	public void remove(ComponentName componentName) {
-		synchronized (mCache) {
-			mCache.remove(componentName);
-		}
-	}
-
-	public void flush() {
-		synchronized (mCache) {
-			mCache.clear();
-		}
-	}
-
 	public void getTitleAndIcon(RgkItemAppsInfo application, ResolveInfo info,
 			HashMap<Object, CharSequence> labelCache) {
 		synchronized (mCache) {
@@ -126,10 +63,6 @@ public class RgkAppIconCache {
 			application.mTitle = entry.title;
 			application.mIconBitmap = entry.icon;
 		}
-	}
-
-	public boolean isDefaultIcon(Bitmap icon) {
-		return mDefaultIcon == icon;
 	}
 
 	private CacheEntry cacheLocked(ComponentName componentName,
@@ -158,6 +91,25 @@ public class RgkAppIconCache {
 					mContext);
 		}
 		return entry;
+	}
+
+	public Drawable getFullResIcon(ResolveInfo info) {
+
+		Resources resources;
+		try {
+			resources = mPackageManager
+					.getResourcesForApplication(info.activityInfo.applicationInfo);
+		} catch (PackageManager.NameNotFoundException e) {
+			resources = null;
+		}
+		if (resources != null) {
+			int iconId = info.activityInfo.getIconResource();
+			if (iconId != 0) {
+				return getFullResIcon(resources, iconId);
+			}
+		}
+
+		return getFullResDefaultActivityIcon();
 	}
 
 }
